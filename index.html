@@ -102,6 +102,85 @@
     50% { text-shadow: -3px -3px #800; }
     100% { text-shadow: 2px -2px darkred; }
   }
+
+  /* NEW */
+  #eyes {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 60px;
+    opacity: 0;
+    transition: opacity 1s linear;
+    letter-spacing: 40px;
+    z-index: 9999999;
+  }
+
+  #demonSilhouette {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(0,0,0,0.8) 100%);
+    opacity: 0; pointer-events: none;
+    z-index: 9000000;
+    transition: opacity 3s ease;
+  }
+
+  #cameraWarning {
+    position: fixed;
+    top: 10%; left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    background: rgba(255,0,0,0.2);
+    border: 1px solid red;
+    padding: 20px;
+    font-size: 30px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 1s ease;
+    z-index: 9999999;
+  }
+
+  #globalBack {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(50,0,0,0.8);
+    padding: 14px 28px;
+    border-radius: 40px;
+    color: white;
+    font-size: 18px;
+    border: 1px solid red;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 90000000;
+  }
+
+  /* NEW shadow figure */
+  #walkerShadow {
+    position: fixed;
+    bottom: 0;
+    left: -200px;
+    width: 200px;
+    height: 400px;
+    background: rgba(0,0,0,0.85);
+    opacity: 0;
+    transition: transform 4s linear, opacity 1s ease;
+    z-index: 999999;
+  }
+
+  /* NEW glitch overlay */
+  #glitchOverlay {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:white;
+    mix-blend-mode:difference;
+    opacity:0;
+    z-index:9999999;
+    pointer-events:none;
+    transition:opacity 0.1s ease;
+  }
 </style>
 </head>
 
@@ -117,7 +196,6 @@
 
 <div id="msgBox"></div>
 
-<!-- SCARE SCREENS -->
 <div id="dareScreen"    class="scareScreen"><span>HOW DARE YOU</span><button class="backBtn">Go Back</button></div>
 <div id="warnScreen"    class="scareScreen"><span>I WARNED YOU</span><button class="backBtn">Go Back</button></div>
 <div id="stopScreen"    class="scareScreen"><span>YOU NEVER LISTEN</span><button class="backBtn">Go Back</button></div>
@@ -127,7 +205,6 @@
 <div id="knowScreen"    class="scareScreen"><span id="knowText">you work in sris right?</span><button class="backBtn">Go Back</button></div>
 <div id="terminalScreen" class="scareScreen"><span id="terminalText"></span><button class="backBtn">Go Back</button></div>
 
-<!-- PERSONAL SCARE -->
 <div id="nameScreen" class="scareScreen">
   <span id="nameText">Isn’t your name…  
 <span id="fakeGuess" style="color:white;">Sarah</span>?</span>
@@ -138,32 +215,32 @@
 <div id="demonFlash"></div>
 <div id="blackoutScreen">system integrity compromised</div>
 
+<!-- NEW -->
+<div id="eyes">👁️ 👁️</div>
+<div id="demonSilhouette"></div>
+<div id="cameraWarning">Camera Active…</div>
+<div id="globalBack">Back</div>
+<div id="walkerShadow"></div>
+<div id="glitchOverlay"></div>
+
 <script>
-/* ----------------------------------------------------
-   PERSONALIZATION SYSTEM
----------------------------------------------------- */
+/* ORIGINAL PERSONALIZATION SYSTEM */
 let fakeNameList = ["Sarah","Mia","Aiden","Emily","Noah","Liam","Ava","Isabella"];
 let fakeGuess = fakeNameList[Math.floor(Math.random()*fakeNameList.length)];
 document.getElementById("fakeGuess").innerText = fakeGuess;
 
 let realName = null;
 
-/* Ask for name after a delay */
 setTimeout(()=>{
   realName = prompt("…what’s your name?");
   if(!realName) realName = fakeGuess;
-
-  // Use their name everywhere
-  document.getElementById("knowText").innerText =
-    "I already knew your name, " + realName + ".";
-
+  document.getElementById("knowText").innerText = "I already knew your name, " + realName + ".";
 }, 15000);
 
+/* OPTION 3 (ADDED): Override fakeGuess without modifying code */
+fakeGuess = "Mr. Steven";
 
-/* ----------------------------------------------------
-   HELPERS
----------------------------------------------------- */
-
+/* HELPERS */
 function showMsg(t){
   const m=document.getElementById("msgBox");
   m.innerText=t;
@@ -176,8 +253,7 @@ function showScare(id,text){
   if(text) s.querySelector("span").innerText = text;
   s.style.opacity=1;
   s.style.pointerEvents="all";
-  let btn=s.querySelector(".backBtn");
-  btn.style.display="block";
+  s.querySelector(".backBtn").style.display="block";
 }
 
 function hideScare(id){
@@ -186,7 +262,6 @@ function hideScare(id){
   s.style.pointerEvents="none";
 }
 
-/* Attach all back buttons */
 document.querySelectorAll(".backBtn").forEach(btn=>{
   btn.onclick = (e)=>{
     let screen = e.target.parentElement.id;
@@ -194,24 +269,27 @@ document.querySelectorAll(".backBtn").forEach(btn=>{
   };
 });
 
-/* ----------------------------------------------------
-   BUTTON ACTIONS
----------------------------------------------------- */
-btn1.onclick=()=>showScare("dareScreen","How dare you, " + (realName||fakeGuess));
-btn2.onclick=()=>showScare("warnScreen","You were told not to look, " + (realName||fakeGuess));
-btn3.onclick=()=>showScare("stopScreen","You never listen, " + (realName||fakeGuess));
+/* ORIGINAL BUTTONS + activate global back */
+function activateGlobalBack(){
+  const b=document.getElementById("globalBack");
+  b.style.opacity=1;
+  b.style.pointerEvents="auto";
+}
 
-btnAI.onclick=()=>{
-  showScare("aiScreen","SYSTEM FAILURE\n"+(realName||fakeGuess)+", step away.");
+btn1.onclick=()=>{ showScare("dareScreen","How dare you, "+fakeGuess); activateGlobalBack(); };
+btn2.onclick=()=>{ showScare("warnScreen","You were told not to look, "+fakeGuess); activateGlobalBack(); };
+btn3.onclick=()=>{ showScare("stopScreen","You never listen, "+fakeGuess); activateGlobalBack(); };
+btnAI.onclick=()=>{ showScare("aiScreen","SYSTEM FAILURE\n"+fakeGuess+", step away."); activateGlobalBack(); };
+btnKnow.onclick=()=>{ showScare("nameScreen"); activateGlobalBack(); };
+
+document.getElementById("globalBack").onclick=()=>{
+  document.querySelectorAll(".scareScreen").forEach(s=>{
+    s.style.opacity=0;
+    s.style.pointerEvents="none";
+  });
 };
 
-btnKnow.onclick=()=>{
-  showScare("nameScreen");
-};
-
-/* ----------------------------------------------------
-   EFFECTS — CURSOR SHAKE
----------------------------------------------------- */
+/* CURSOR SHAKE */
 function cursorShake(){
   if(Math.random()<0.1){
     document.body.style.cursor="none";
@@ -221,34 +299,28 @@ function cursorShake(){
 }
 cursorShake();
 
-/* ----------------------------------------------------
-   SCROLL LOCK
----------------------------------------------------- */
+/* SCROLL LOCK */
 let lock=false;
 window.addEventListener("scroll",()=>{
   if(!lock && Math.random()<0.1){
     lock=true;
     document.body.style.overflow="hidden";
-    showMsg("Stop struggling, "+(realName||fakeGuess)+".");
+    showMsg("Stop struggling, "+fakeGuess+".");
     setTimeout(()=>{
-      document.body.style.overflow="auto";
+      document.body.overflow="auto";
       lock=false;
     },2000);
   }
 });
 
-/* ----------------------------------------------------
-   DEMON MICRO FLASH
----------------------------------------------------- */
+/* FLASH */
 setTimeout(()=>{
   const d=document.getElementById("demonFlash");
   d.style.opacity=1;
   setTimeout(()=>d.style.opacity=0,50);
 }, Math.random()*12000+8000);
 
-/* ----------------------------------------------------
-   CORNER SHADOW
----------------------------------------------------- */
+/* SHADOW */
 setInterval(()=>{
   if(Math.random()<0.15){
     const c=document.getElementById("cornerShadow");
@@ -257,52 +329,161 @@ setInterval(()=>{
   }
 },7000);
 
-/* ----------------------------------------------------
-   BLACKOUT ERROR
----------------------------------------------------- */
+/* BLACKOUT */
 setTimeout(()=>{
   const b=document.getElementById("blackoutScreen");
   b.style.opacity=1;
   setTimeout(()=>b.style.opacity=0,2500);
-}, 45000);
+},45000);
 
-/* ----------------------------------------------------
-   IDLE PRESENCE DETECTOR
----------------------------------------------------- */
+/* IDLE PRESENCE */
 let lastMove=Date.now();
 document.addEventListener("mousemove",()=>lastMove=Date.now());
-
 setInterval(()=>{
   if(Date.now()-lastMove>4000){
-    showScare("presenceScreen","I'm right behind you, "+(realName||fakeGuess)+".");
+    showScare("presenceScreen","I'm right behind you, "+fakeGuess+".");
+    activateGlobalBack();
   }
 },3000);
 
-/* ----------------------------------------------------
-   TERMINAL GHOST TYPING
----------------------------------------------------- */
+/* TERMINAL */
 setTimeout(()=>{
   const t=document.getElementById("terminalText");
   const s=document.getElementById("terminalScreen");
-  let text="ACCESSING MEMORY NODE…\n...\nYou ignored me last time, "+(realName||fakeGuess)+".";
+  let text="ACCESSING MEMORY NODE…\n...\nYou ignored me last time, "+fakeGuess+".";
   let i=0;
 
   s.style.opacity=1;
-
   function type(){
     t.innerText=text.slice(0,i);
     i++;
     if(i<=text.length) setTimeout(type,60);
   }
   type();
-}, 60000);
+},60000);
 
-/* ----------------------------------------------------
-   PERSONAL IDLE MESSAGE
----------------------------------------------------- */
+/* Moving Eyes */
+setInterval(()=>{
+  const e=document.getElementById("eyes");
+  if(Math.random()<0.15){
+    e.style.opacity=1;
+    e.style.transform="translateX("+(Math.random()*60-30)+"px)";
+    setTimeout(()=>e.style.opacity=0,2000);
+  }
+},7000);
+
+/* Taps */
+function playTap(){
+  const ctx = new AudioContext();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.frequency.value=800;
+  g.gain.value=0.1;
+  o.connect(g); g.connect(ctx.destination);
+  o.start(); o.stop(ctx.currentTime+0.05);
+}
+setInterval(()=>{ if(Math.random()<0.1) playTap(); },5000);
+
+/* Footsteps */
+function playFootstep(){
+  const ctx = new AudioContext();
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.frequency.value=50;
+  g.gain.setValueAtTime(0.2,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.4);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(); o.stop(ctx.currentTime+0.4);
+}
+setInterval(()=>{ if(Math.random()<0.08) playFootstep(); },7000);
+
+/* Fake Camera */
 setTimeout(()=>{
-  showMsg("You're breathing faster, "+(realName||fakeGuess)+".");
-}, 20000);
+  const cam=document.getElementById("cameraWarning");
+  cam.style.opacity=1;
+  setTimeout(()=>cam.style.opacity=0,6000);
+},35000);
+
+/* Silhouette */
+setTimeout(()=>{
+  const s=document.getElementById("demonSilhouette");
+  s.style.opacity=1;
+  setTimeout(()=>s.style.opacity=0,6000);
+},50000);
+
+/* -----------------------------------
+   NEW: Whispers (audio)
+----------------------------------- */
+function playWhisper(){
+  const ctx=new AudioContext();
+  const buffer=ctx.createBuffer(1,44100,44100);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*0.03;
+  const src=ctx.createBufferSource();
+  src.buffer=buffer;
+  const gain=ctx.createGain();
+  gain.gain.value=0.1;
+  src.connect(gain); gain.connect(ctx.destination);
+  src.start();
+}
+setInterval(()=>{ if(Math.random()<0.07) playWhisper(); },6000);
+
+/* -----------------------------------
+   NEW: Breathing
+----------------------------------- */
+function playBreathing(){
+  const ctx=new AudioContext();
+  const o=ctx.createOscillator();
+  const g=ctx.createGain();
+  o.frequency.value=20;
+  g.gain.value=0.001;
+  g.gain.exponentialRampToValueAtTime(0.03,ctx.currentTime+1.5);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+3);
+  o.connect(g); g.connect(ctx.destination);
+  o.start();
+  o.stop(ctx.currentTime+3);
+}
+setInterval(()=>{ if(Math.random()<0.06) playBreathing(); },8000);
+
+/* -----------------------------------
+   NEW: Heartbeat
+----------------------------------- */
+function playHeartbeat(){
+  const ctx=new AudioContext();
+  const o=ctx.createOscillator();
+  const g=ctx.createGain();
+  o.frequency.value=60;
+  g.gain.value=0.3;
+  g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.2);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(); o.stop(ctx.currentTime+0.2);
+}
+setInterval(()=>{ if(Math.random()<0.05) playHeartbeat(); },3000);
+
+/* -----------------------------------
+   NEW: Shadow walking past
+----------------------------------- */
+setInterval(()=>{
+  if(Math.random()<0.08){
+    const w=document.getElementById("walkerShadow");
+    w.style.opacity=1;
+    w.style.transform="translateX(150vw)";
+    setTimeout(()=>{
+      w.style.opacity=0;
+      w.style.transform="translateX(-200px)";
+    },4000);
+  }
+},9000);
+
+/* -----------------------------------
+   NEW: Glitch bursts
+----------------------------------- */
+function glitchBurst(){
+  const g=document.getElementById("glitchOverlay");
+  g.style.opacity=1;
+  setTimeout(()=>g.style.opacity=0,80);
+}
+setInterval(()=>{ if(Math.random()<0.1) glitchBurst(); },5000);
 
 </script>
 </body>
