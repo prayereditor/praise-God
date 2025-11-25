@@ -103,7 +103,6 @@
     100% { text-shadow: 2px -2px darkred; }
   }
 
-  /* NEW */
   #eyes {
     position: fixed;
     top: 20%;
@@ -156,7 +155,6 @@
     z-index: 90000000;
   }
 
-  /* NEW shadow figure */
   #walkerShadow {
     position: fixed;
     bottom: 0;
@@ -169,7 +167,6 @@
     z-index: 999999;
   }
 
-  /* NEW glitch overlay */
   #glitchOverlay {
     position: fixed;
     top:0; left:0;
@@ -181,6 +178,58 @@
     pointer-events:none;
     transition:opacity 0.1s ease;
   }
+
+  /* ------------------------------
+     NEW: Horror Name Popup
+  ------------------------------ */
+  #namePopupBg {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(4px);
+    display:flex; justify-content:center; align-items:center;
+    z-index: 99999999;
+    opacity:0; pointer-events:none;
+    transition: opacity 0.5s ease;
+  }
+  #namePopup {
+    background: rgba(20,0,0,0.9);
+    border:1px solid red;
+    padding:30px;
+    width:80%;
+    max-width:340px;
+    text-align:center;
+    color:red;
+    box-shadow:0 0 20px red;
+    animation: flicker 1.4s infinite;
+  }
+  @keyframes flicker {
+    0% {opacity:1;}
+    50% {opacity:0.8;}
+    100% {opacity:1;}
+  }
+  #nameInput {
+    width:90%;
+    padding:10px;
+    background:black;
+    border:1px solid red;
+    color:white;
+    margin-top:15px;
+    text-align:center;
+    font-size:18px;
+  }
+  #nameSubmit {
+    margin-top:20px;
+    padding:10px 20px;
+    background:darkred;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+    width:100%;
+  }
+  #nameSubmit:hover { background:red; }
 </style>
 </head>
 
@@ -188,6 +237,7 @@
 
 <h1 class="glitch">Do NOT press any buttons.</h1>
 
+<!-- Buttons -->
 <button id="btn1" class="warningBtn">DON'T PRESS THIS</button>
 <button id="btn2" class="warningBtn">DO NOT LOOK HERE</button>
 <button id="btn3" class="warningBtn">SERIOUSLY, STOP</button>
@@ -196,26 +246,34 @@
 
 <div id="msgBox"></div>
 
+<!-- Screens -->
 <div id="dareScreen"    class="scareScreen"><span>HOW DARE YOU</span><button class="backBtn">Go Back</button></div>
 <div id="warnScreen"    class="scareScreen"><span>I WARNED YOU</span><button class="backBtn">Go Back</button></div>
 <div id="stopScreen"    class="scareScreen"><span>YOU NEVER LISTEN</span><button class="backBtn">Go Back</button></div>
 <div id="presenceScreen"class="scareScreen"><span>WHY ARE YOU STILL HERE?</span><button class="backBtn">Go Back</button></div>
 <div id="delayedScreen" class="scareScreen"><span>YOU SHOULDN’T HAVE STAYED THIS LONG</span><button class="backBtn">Go Back</button></div>
 <div id="aiScreen"      class="scareScreen"><span>SYSTEM STATUS: NOT STABLE</span><button class="backBtn">Go Back</button></div>
-<div id="knowScreen"    class="scareScreen"><span id="knowText">you work in sris right?</span><button class="backBtn">Go Back</button></div>
-<div id="terminalScreen" class="scareScreen"><span id="terminalText"></span><button class="backBtn">Go Back</button></div>
 
-<div id="nameScreen" class="scareScreen">
-  <span id="nameText">Isn’t your name…  
-<span id="fakeGuess" style="color:white;">Sarah</span>?</span>
+<div id="knowScreen" class="scareScreen">
+  <span id="knowText"></span>
   <button class="backBtn">Go Back</button>
 </div>
 
+<div id="terminalScreen" class="scareScreen">
+  <span id="terminalText"></span>
+  <button class="backBtn">Go Back</button>
+</div>
+
+<div id="nameScreen" class="scareScreen">
+  <span id="nameText">Isn’t your name…  
+  <span id="fakeGuess" style="color:white;"></span>?</span>
+  <button class="backBtn">Go Back</button>
+</div>
+
+<!-- Effects -->
 <div id="cornerShadow"></div>
 <div id="demonFlash"></div>
 <div id="blackoutScreen">system integrity compromised</div>
-
-<!-- NEW -->
 <div id="eyes">👁️ 👁️</div>
 <div id="demonSilhouette"></div>
 <div id="cameraWarning">Camera Active…</div>
@@ -223,24 +281,82 @@
 <div id="walkerShadow"></div>
 <div id="glitchOverlay"></div>
 
+<!-- NAME POPUP -->
+<div id="namePopupBg">
+  <div id="namePopup">
+    <h2>What's your name?</h2>
+    <input id="nameInput" placeholder="e.g., Mr. Steven">
+    <button id="nameSubmit">Continue</button>
+  </div>
+</div>
+
 <script>
-/* ORIGINAL PERSONALIZATION SYSTEM */
-let fakeNameList = ["Steven","John","Aiden","Hayden","Andrew","Thabiso"];
-let fakeGuess = fakeNameList[Math.floor(Math.random()*fakeNameList.length)];
-document.getElementById("fakeGuess").innerText = fakeGuess;
 
-let realName = Steven;
+/* --------------------------------------------------------
+      NEW: Name popup system + saving + validation
+--------------------------------------------------------- */
 
-setTimeout(()=>{
-  realName = prompt("…what’s your name?");
-  if(!realName) realName = fakeGuess;
-  document.getElementById("knowText").innerText = "I already knew your name, " + realName + ".";
-}, 15000);
+let userName = null;
 
-/* OPTION 3 (ADDED): Override fakeGuess without modifying code */
-fakeGuess = "Mr. Steven";
+function capitalizeName(n){
+  return n
+    .split(" ")
+    .filter(w => w.trim().length > 0)
+    .map(w => w[0].toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+}
 
-/* HELPERS */
+function validName(n){
+  return /^[A-Za-z .'-]{2,40}$/.test(n.trim());
+}
+
+function openPopup(){
+  const bg = document.getElementById("namePopupBg");
+  bg.style.opacity = 1;
+  bg.style.pointerEvents = "all";
+}
+
+function closePopup(){
+  const bg = document.getElementById("namePopupBg");
+  bg.style.opacity = 0;
+  bg.style.pointerEvents = "none";
+}
+
+function setName(n){
+  userName = n;
+  localStorage.setItem("horrorName", n);
+  document.getElementById("fakeGuess").innerText = n;
+  document.getElementById("knowText").innerText = "I already knew your name, " + n + ".";
+}
+
+/* On page load */
+window.onload = function(){
+  let saved = localStorage.getItem("horrorName");
+  if(saved){
+    userName = saved;
+    setName(saved);
+  }
+  else {
+    openPopup();
+  }
+};
+
+/* popup button */
+document.getElementById("nameSubmit").onclick = function(){
+  let val = document.getElementById("nameInput").value.trim();
+  if(!validName(val)){
+    alert("Enter a real name (letters only).");
+    return;
+  }
+  val = capitalizeName(val);
+  setName(val);
+  closePopup();
+};
+
+/* -----------------------------
+   Existing Functions
+----------------------------- */
+
 function showMsg(t){
   const m=document.getElementById("msgBox");
   m.innerText=t;
@@ -264,22 +380,20 @@ function hideScare(id){
 
 document.querySelectorAll(".backBtn").forEach(btn=>{
   btn.onclick = (e)=>{
-    let screen = e.target.parentElement.id;
-    hideScare(screen);
+    hideScare(e.target.parentElement.id);
   };
 });
 
-/* ORIGINAL BUTTONS + activate global back */
 function activateGlobalBack(){
   const b=document.getElementById("globalBack");
   b.style.opacity=1;
   b.style.pointerEvents="auto";
 }
 
-btn1.onclick=()=>{ showScare("dareScreen","How dare you, "+fakeGuess); activateGlobalBack(); };
-btn2.onclick=()=>{ showScare("warnScreen","You were told not to look, "+fakeGuess); activateGlobalBack(); };
-btn3.onclick=()=>{ showScare("stopScreen","You never listen, "+fakeGuess); activateGlobalBack(); };
-btnAI.onclick=()=>{ showScare("aiScreen","SYSTEM FAILURE\n"+fakeGuess+", step away."); activateGlobalBack(); };
+btn1.onclick=()=>{ showScare("dareScreen","How dare you, "+userName); activateGlobalBack(); };
+btn2.onclick=()=>{ showScare("warnScreen","You were told not to look, "+userName); activateGlobalBack(); };
+btn3.onclick=()=>{ showScare("stopScreen","You never listen, "+userName); activateGlobalBack(); };
+btnAI.onclick=()=>{ showScare("aiScreen","SYSTEM FAILURE\n"+userName+", step away."); activateGlobalBack(); };
 btnKnow.onclick=()=>{ showScare("nameScreen"); activateGlobalBack(); };
 
 document.getElementById("globalBack").onclick=()=>{
@@ -289,7 +403,7 @@ document.getElementById("globalBack").onclick=()=>{
   });
 };
 
-/* CURSOR SHAKE */
+/* Cursor shake */
 function cursorShake(){
   if(Math.random()<0.1){
     document.body.style.cursor="none";
@@ -299,13 +413,13 @@ function cursorShake(){
 }
 cursorShake();
 
-/* SCROLL LOCK */
+/* Scroll lock */
 let lock=false;
 window.addEventListener("scroll",()=>{
   if(!lock && Math.random()<0.1){
     lock=true;
     document.body.style.overflow="hidden";
-    showMsg("Stop struggling, "+fakeGuess+".");
+    showMsg("Stop struggling, "+userName+".");
     setTimeout(()=>{
       document.body.overflow="auto";
       lock=false;
@@ -313,14 +427,14 @@ window.addEventListener("scroll",()=>{
   }
 });
 
-/* FLASH */
+/* Flash */
 setTimeout(()=>{
   const d=document.getElementById("demonFlash");
   d.style.opacity=1;
   setTimeout(()=>d.style.opacity=0,50);
 }, Math.random()*12000+8000);
 
-/* SHADOW */
+/* Shadow */
 setInterval(()=>{
   if(Math.random()<0.15){
     const c=document.getElementById("cornerShadow");
@@ -329,28 +443,28 @@ setInterval(()=>{
   }
 },7000);
 
-/* BLACKOUT */
+/* Blackout */
 setTimeout(()=>{
   const b=document.getElementById("blackoutScreen");
   b.style.opacity=1;
   setTimeout(()=>b.style.opacity=0,2500);
 },45000);
 
-/* IDLE PRESENCE */
+/* Idle presence */
 let lastMove=Date.now();
 document.addEventListener("mousemove",()=>lastMove=Date.now());
 setInterval(()=>{
   if(Date.now()-lastMove>4000){
-    showScare("presenceScreen","I'm right behind you, "+fakeGuess+".");
+    showScare("presenceScreen","I'm right behind you, "+userName+".");
     activateGlobalBack();
   }
 },3000);
 
-/* TERMINAL */
+/* Terminal */
 setTimeout(()=>{
   const t=document.getElementById("terminalText");
   const s=document.getElementById("terminalScreen");
-  let text="ACCESSING MEMORY NODE…\n...\nYou ignored me last time, "+fakeGuess+".";
+  let text="ACCESSING MEMORY NODE…\n...\nYou ignored me last time, "+userName+".";
   let i=0;
 
   s.style.opacity=1;
@@ -362,7 +476,7 @@ setTimeout(()=>{
   type();
 },60000);
 
-/* Moving Eyes */
+/* Eyes */
 setInterval(()=>{
   const e=document.getElementById("eyes");
   if(Math.random()<0.15){
@@ -397,7 +511,7 @@ function playFootstep(){
 }
 setInterval(()=>{ if(Math.random()<0.08) playFootstep(); },7000);
 
-/* Fake Camera */
+/* Fake camera */
 setTimeout(()=>{
   const cam=document.getElementById("cameraWarning");
   cam.style.opacity=1;
@@ -411,9 +525,7 @@ setTimeout(()=>{
   setTimeout(()=>s.style.opacity=0,6000);
 },50000);
 
-/* -----------------------------------
-   NEW: Whispers (audio)
------------------------------------ */
+/* Whispers */
 function playWhisper(){
   const ctx=new AudioContext();
   const buffer=ctx.createBuffer(1,44100,44100);
@@ -428,9 +540,7 @@ function playWhisper(){
 }
 setInterval(()=>{ if(Math.random()<0.07) playWhisper(); },6000);
 
-/* -----------------------------------
-   NEW: Breathing
------------------------------------ */
+/* Breathing */
 function playBreathing(){
   const ctx=new AudioContext();
   const o=ctx.createOscillator();
@@ -445,9 +555,7 @@ function playBreathing(){
 }
 setInterval(()=>{ if(Math.random()<0.06) playBreathing(); },8000);
 
-/* -----------------------------------
-   NEW: Heartbeat
------------------------------------ */
+/* Heartbeat */
 function playHeartbeat(){
   const ctx=new AudioContext();
   const o=ctx.createOscillator();
@@ -460,9 +568,7 @@ function playHeartbeat(){
 }
 setInterval(()=>{ if(Math.random()<0.05) playHeartbeat(); },3000);
 
-/* -----------------------------------
-   NEW: Shadow walking past
------------------------------------ */
+/* Shadow walker */
 setInterval(()=>{
   if(Math.random()<0.08){
     const w=document.getElementById("walkerShadow");
@@ -475,9 +581,7 @@ setInterval(()=>{
   }
 },9000);
 
-/* -----------------------------------
-   NEW: Glitch bursts
------------------------------------ */
+/* Glitch bursts */
 function glitchBurst(){
   const g=document.getElementById("glitchOverlay");
   g.style.opacity=1;
