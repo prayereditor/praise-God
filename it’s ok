@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>I’m OK</title>
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    color: #b10000;
+    font-family: "Courier New", monospace;
+    overflow-x: hidden;
+  }
+  .repeat {
+    padding: 20px;
+    line-height: 2;
+    font-size: 1.4rem;
+    white-space: pre-wrap;
+  }
+  .glitch {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    color: #b10000;
+    text-shadow: 2px 0 #300, -2px 0 #300;
+    animation: flicker 2s infinite;
+    pointer-events: none;
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .flash {
+    position: fixed;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s;
+  }
+</style>
+</head>
+<body>
+<div class="glitch">i’m ok</div>
+<div class="flash" id="flash"></div>
+
+<div class="repeat" id="text"></div>
+
+<script>
+  const container = document.getElementById("text");
+  const phrase = "i’m ok ";
+  let block = "";
+  for (let i = 0; i < 800; i++) block += phrase;
+  container.textContent = block;
+
+  function randomFlash() {
+    const flash = document.getElementById("flash");
+    flash.style.opacity = Math.random() < 0.1 ? "1" : "0";
+    setTimeout(randomFlash, 150);
+  }
+  randomFlash();
+</script>
+</body>
+</html>
