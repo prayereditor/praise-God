@@ -108,6 +108,28 @@
     75% { transform: translate(calc(-50% + 2px), calc(-50% - 2px)) rotate(0.5deg); }
     100% { transform: translate(-50%, -50%) rotate(0deg); }
   }
+
+  /* Ghost overlay */
+  .ghost {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s;
+    z-index: 9999;
+  }
+
+  .ghost img {
+    width: 70%;
+    max-width: 400px;
+    filter: grayscale(100%) contrast(200%) blur(1px);
+  }
 </style>
 </head>
 
@@ -130,6 +152,11 @@
 
 <div id="stayMsg" class="stay-msg"></div>
 
+<!-- Ghost overlay -->
+<div id="ghost" class="ghost">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Ghostly_face.png" alt="ghost face" />
+</div>
+
 <script>
   // Fill page with text
   const container = document.getElementById("text");
@@ -148,6 +175,7 @@
   function triggerGlitch() {
     document.body.style.filter = "blur(3px)";
     setTimeout(() => document.body.style.filter = "none", 300);
+    alert("How dare you"); // NEW POPUP
   }
 
   function triggerScare() {
@@ -174,21 +202,34 @@
     }, 6000);
   }
 
-  // After 10 seconds
-  setTimeout(() => {
-    showMsg("Mr David is going to stress me out.");
-  }, 10000);
+  // Timed creepy messages
+  setTimeout(() => { showMsg("Mr David is going to stress me out."); }, 10000);
+  setTimeout(() => { showMsg("My family is falling apart thanks to the police."); }, 20000);
+  setTimeout(() => { showMsg("I have your IP:\n127.0.0.1"); }, 30000);
 
-  // After 20 seconds
-  setTimeout(() => {
-    showMsg("My family is falling apart thanks to the police.");
-  }, 20000);
+  // --- Ghost logic ---
+  const ghost = document.getElementById("ghost");
 
-  // After 30 seconds — fake IP scare
-  setTimeout(() => {
-    showMsg("I have your IP:\n127.0.0.1");
-  }, 30000);
-</script>
+  function randomGhost() {
+    if (Math.random() < 0.15) {
+      ghost.style.opacity = "1";
+      setTimeout(() => { ghost.style.opacity = "0"; }, 3000);
+    }
+    setTimeout(randomGhost, 7000);
+  }
+  randomGhost();
 
-</body>
-</html>
+  // Ghost follows cursor sometimes
+  document.addEventListener("mousemove", (e) => {
+    if (Math.random() < 0.05) {
+      ghost.style.opacity = "1";
+      ghost.style.position = "fixed";
+      ghost.style.left = e.clientX - 200 + "px";
+      ghost.style.top = e.clientY - 200 + "px";
+      setTimeout(() => { ghost.style.opacity = "0"; }, 2000);
+    }
+  });
+
+  // Heartbeat background
+  function heartbeat() {
+    document.body.style.background = Math.random() <
