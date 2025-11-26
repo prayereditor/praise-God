@@ -6,10 +6,13 @@
 <title>I’m Fine — Leave.</title>
 
 <style>
-/* -------------------------------- */
-/* BASE PAGE STYLES                */
-/* -------------------------------- */
+/* FONT (fallback using Arial) */
+@font-face {
+  font-family: "Poppins";
+  src: local("Arial");
+}
 
+/* BASE */
 body {
   background: black;
   color: red;
@@ -20,13 +23,12 @@ body {
   transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* CHRISTIAN MODE BODY */
 body.christianMode {
   background: white !important;
   color: black !important;
 }
 
-/* HORROR BUTTONS */
+/* BUTTONS */
 .warningBtn {
   padding: 15px 25px;
   background: darkred;
@@ -42,7 +44,6 @@ body.christianMode {
 }
 .warningBtn:hover { background: red; }
 
-/* CHRISTIAN MODE BUTTON COLORS */
 body.christianMode .warningBtn {
   background: #0077ff !important;
   color: white !important;
@@ -65,8 +66,6 @@ body.christianMode .warningBtn:hover {
   transition: opacity 1s ease;
   z-index: 999998;
 }
-
-/* CHRISTIAN MODE – SOFT WHITE SCREENS */
 body.christianMode .scareScreen {
   background: white !important;
   color: #0044aa !important;
@@ -81,48 +80,55 @@ body.christianMode .scareScreen {
   font-size: 20px;
   display: none;
 }
-body.christianMode .backBtn {
-  background: #0077ff !important;
-}
+body.christianMode .backBtn { background: #0077ff !important; }
 
-/* HIDDEN HORROR FX IN CHRISTIAN MODE */
-body.christianMode #demonFlash,
-body.christianMode #cornerShadow,
-body.christianMode #blackoutScreen,
-body.christianMode #eyes,
-body.christianMode #demonSilhouette,
-body.christianMode #cameraWarning,
-body.christianMode #walkerShadow,
-body.christianMode #glitchOverlay {
-  opacity: 0 !important;
-}
-
-/* FLOATING HOLY TEXTS */
+/* -------- HOLY FLOATING TEXT — NO CLASH -------- */
 .holyFloat {
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  color: #0077ff;
+  bottom: 10%;
+  font-size: 28px;
+  color: #005eff;
   opacity: 0;
   white-space: nowrap;
-  animation: holyFloatUp 6s linear infinite;
   pointer-events: none;
   z-index: 999999999;
+  font-family: "Poppins", sans-serif;
   display: none;
 }
 
-@keyframes holyFloatUp {
-  0% { transform: translate(-50%, 40px); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translate(-50%, -120px); opacity: 0; }
+/* LEFT SIDE FLOAT */
+.float1 {
+  left: 20%;
+  animation: holyFloat1 10s linear infinite;
+  animation-delay: 0s;
 }
 
-.float1 { top: 80%; animation-delay: 0s; }
-.float2 { top: 86%; animation-delay: 3s; }
+/* RIGHT SIDE FLOAT */
+.float2 {
+  left: 80%;
+  animation: holyFloat2 14s linear infinite;
+  animation-delay: 4s;
+}
 
-body.christianMode .holyFloat { display: block; }
+/* Float #1 path */
+@keyframes holyFloat1 {
+  0%   { transform: translateY(80px); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-200px); opacity: 0; }
+}
+
+/* Float #2 path */
+@keyframes holyFloat2 {
+  0%   { transform: translateY(120px); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateY(-240px); opacity: 0; }
+}
+
+body.christianMode .holyFloat {
+  display: block;
+}
 
 /* NAME POPUP */
 #namePopupBg {
@@ -169,11 +175,8 @@ body.christianMode .holyFloat { display: block; }
   width:100%;
 }
 
-/* -------------------------------- */
-/*  CHRISTIAN MODE EXTRAS           */
-/* -------------------------------- */
+/* -------- CHRISTIAN MODE VISUALS -------- */
 
-/* GLOWING FLOATING CROSS */
 #holyCross {
   position: fixed;
   top: 30%;
@@ -183,46 +186,41 @@ body.christianMode .holyFloat { display: block; }
   color: #0077ff;
   text-shadow: 0 0 30px #6ab3ff, 0 0 60px #4d9cff;
   opacity: 0;
-  transition: opacity 1.5s ease;
   z-index: 9999999;
   display: none;
+  pointer-events:none;
 }
 body.christianMode #holyCross {
   display: block;
   opacity: 1;
   animation: crossFloat 6s ease-in-out infinite;
 }
-
 @keyframes crossFloat {
   0% { transform: translate(-50%, -10px); }
   50% { transform: translate(-50%, -30px); }
   100% { transform: translate(-50%, -10px); }
 }
 
-/* ROTATING HOLY SPOTLIGHT */
 #holySpotlight {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.4), rgba(255,255,255,0) 70%);
-  mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
   opacity: 0;
   display: none;
+  pointer-events:none;
   z-index: 9998;
   animation: rotateLight 15s linear infinite;
 }
-
 @keyframes rotateLight {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0%{ transform: rotate(0deg); }
+  100%{ transform: rotate(360deg); }
 }
-
 body.christianMode #holySpotlight {
-  display: block;
-  opacity: 1;
+  display:block;
+  opacity:1;
 }
 
-/* SCRIPTURE TEXT */
 #scriptureBox {
   position: fixed;
   bottom: 15%;
@@ -231,15 +229,12 @@ body.christianMode #holySpotlight {
   font-size: 22px;
   color: #0055dd;
   opacity: 0;
-  transition: opacity 1s ease;
   display: none;
-  z-index: 999999;
+  pointer-events:none;
+  font-family: "Poppins", sans-serif;
 }
-body.christianMode #scriptureBox {
-  display: block;
-}
+body.christianMode #scriptureBox { display: block; }
 
-/* MUSIC VISUALIZER — GLOW PULSE */
 #holyPulse {
   position: fixed;
   top: 30%;
@@ -250,21 +245,20 @@ body.christianMode #scriptureBox {
   background: radial-gradient(circle, rgba(0,136,255,0.4), transparent 70%);
   border-radius: 50%;
   opacity: 0;
-  display: none;
+  pointer-events:none;
+  display:none;
   z-index: 999999;
   transition: opacity 1s ease;
 }
-body.christianMode #holyPulse {
-  display: block;
-}
+body.christianMode #holyPulse { display:block; }
+
 </style>
 </head>
 
 <body>
 
-<h1 class="glitch">Do NOT press any buttons.</h1>
+<h1>Do NOT press any buttons.</h1>
 
-<!-- BUTTONS -->
 <button id="btn1" class="warningBtn">DON'T PRESS THIS</button>
 <button id="btn2" class="warningBtn">DO NOT LOOK HERE</button>
 <button id="btn3" class="warningBtn">SERIOUSLY, STOP</button>
@@ -277,38 +271,22 @@ body.christianMode #holyPulse {
 <button id="btnGospel" class="warningBtn">Play Use This Gospel</button>
 <button id="btnStop" class="warningBtn">Stop Music</button>
 
+<!-- FLOATING TEXT (CHRISTIAN MODE ONLY) -->
+<div class="holyFloat float1">Jesus come save me</div>
+<div class="holyFloat float2">I'm armed with Jesus, my weapon is prayer.</div>
+
 <!-- HOLY VISUALS -->
 <div id="holyCross">✝</div>
 <div id="holySpotlight"></div>
 <div id="holyPulse"></div>
 <div id="scriptureBox"></div>
 
-<!-- FLOATING TEXTS -->
-<div class="holyFloat float1">jesus come save me</div>
-<div class="holyFloat float2">I’m armed with Jesus, my weapon is prayer.</div>
-
-<!-- HORROR SYSTEM ELEMENTS -->
-<div id="msgBox"></div>
+<!-- HORROR SCREENS -->
 <div id="dareScreen" class="scareScreen"><span>HOW DARE YOU</span><button class="backBtn">Go Back</button></div>
 <div id="warnScreen" class="scareScreen"><span>I WARNED YOU</span><button class="backBtn">Go Back</button></div>
 <div id="stopScreen" class="scareScreen"><span>YOU NEVER LISTEN</span><button class="backBtn">Go Back</button></div>
-<div id="presenceScreen" class="scareScreen"><span>WHY ARE YOU STILL HERE?</span><button class="backBtn">Go Back</button></div>
-<div id="delayedScreen" class="scareScreen"><span>YOU SHOULDN’T HAVE STAYED THIS LONG</span><button class="backBtn">Go Back</button></div>
-<div id="aiScreen" class="scareScreen"><span>SYSTEM STATUS: NOT STABLE</span><button class="backBtn">Go Back</button></div>
-<div id="knowScreen" class="scareScreen"><span id="knowText"></span><button class="backBtn">Go Back</button></div>
-<div id="terminalScreen" class="scareScreen"><span id="terminalText"></span><button class="backBtn">Go Back</button></div>
+<div id="aiScreen" class="scareScreen"><span>SYSTEM FAILURE</span><button class="backBtn">Go Back</button></div>
 <div id="nameScreen" class="scareScreen"><span id="nameInput">Isn’t your name… <span id="fakeGuess" style="color:white;"></span>?</span><button class="backBtn">Go Back</button></div>
-
-<!-- HORROR FX -->
-<div id="cornerShadow"></div>
-<div id="demonFlash"></div>
-<div id="blackoutScreen">system integrity compromised</div>
-<div id="eyes">👁️ 👁️</div>
-<div id="demonSilhouette"></div>
-<div id="cameraWarning">Camera Active…</div>
-<div id="globalBack" style="opacity:0;pointer-events:none;">Back</div>
-<div id="walkerShadow"></div>
-<div id="glitchOverlay"></div>
 
 <!-- NAME POPUP -->
 <div id="namePopupBg">
@@ -322,100 +300,60 @@ body.christianMode #holyPulse {
 <audio id="bgMusic" loop></audio>
 
 <script>
-/* -------------------------------- */
-/* MUSIC SYSTEM */
-/* -------------------------------- */
-const music = document.getElementById("bgMusic");
+/* MUSIC */
+const music=document.getElementById("bgMusic");
 
-const christmasURL = "https://files.catbox.moe/iqqvwu.mp3";
-const roarURL      = "https://files.catbox.moe/21chs1.mp3";
-const holyURL      = "https://files.catbox.moe/q0n9yh.mp3";
-const gospelURL    = "https://files.catbox.moe/frtvpr.mp3";
+const christmasURL="https://files.catbox.moe/iqqvwu.mp3";
+const roarURL="https://files.catbox.moe/21chs1.mp3";
+const holyURL="https://files.catbox.moe/q0n9yh.mp3";
+const gospelURL="https://files.catbox.moe/frtvpr.mp3";
 
 function playMusic(url){
-  music.src = url;
-  music.volume = 1.0;
+  music.src=url;
+  music.volume=1.0;
   music.play().catch(()=>{});
 }
 
-/* MODE SWITCHERS */
-function setHorrorMode(){
-  document.body.classList.remove("christianMode");
-}
+function setHorrorMode(){ document.body.classList.remove("christianMode"); }
+function setChristianMode(){ document.body.classList.add("christianMode"); startScriptureCycle(); }
 
-function setChristianMode(){
-  document.body.classList.add("christianMode");
-  startScriptureCycle();
-}
+/* SAFARI FIX */
+btnRoar.onclick=()=>{ music.load(); playMusic(roarURL); setHorrorMode(); };
+btnChristmas.onclick=()=>{ music.load(); playMusic(christmasURL); setHorrorMode(); };
+btnHoly.onclick=()=>{ music.load(); playMusic(holyURL); setChristianMode(); };
+btnGospel.onclick=()=>{ music.load(); playMusic(gospelURL); setChristianMode(); };
+btnStop.onclick=()=>music.pause();
 
-/* MUSIC BUTTONS — FIXED FOR SAFARI */
-document.getElementById("btnRoar").onclick = ()=>{
-  music.load();
-  playMusic(roarURL);
-  setHorrorMode();
-};
-document.getElementById("btnChristmas").onclick = ()=>{
-  music.load();
-  playMusic(christmasURL);
-  setHorrorMode();
-};
-document.getElementById("btnHoly").onclick = ()=>{
-  music.load();
-  playMusic(holyURL);
-  setChristianMode();
-};
-document.getElementById("btnGospel").onclick = ()=>{
-  music.load();
-  playMusic(gospelURL);
-  setChristianMode();
-};
-document.getElementById("btnStop").onclick = ()=> music.pause();
-
-/* -------------------------------- */
 /* NAME SYSTEM */
-/* -------------------------------- */
 let userName=null;
 
-function capitalizeName(n){
-  return n.split(" ").filter(w=>w).map(w=>w[0].toUpperCase()+w.slice(1).toLowerCase()).join(" ");
-}
+function capitalizeName(n){ return n.split(" ").filter(w=>w).map(w=>w[0].toUpperCase()+w.slice(1).toLowerCase()).join(" "); }
 function validName(n){ return /^[A-Za-z .'-]{2,40}$/.test(n.trim()); }
 
-function openPopup(){
-  const bg=document.getElementById("namePopupBg");
-  bg.style.opacity=1; bg.style.pointerEvents="all";
-}
-function closePopup(){
-  const bg=document.getElementById("namePopupBg");
-  bg.style.opacity=0; bg.style.pointerEvents="none";
-}
+function openPopup(){ namePopupBg.style.opacity=1; namePopupBg.style.pointerEvents="all"; }
+function closePopup(){ namePopupBg.style.opacity=0; namePopupBg.style.pointerEvents="none"; }
 
 function setName(n){
   userName=n;
   localStorage.setItem("horrorName",n);
-  document.getElementById("fakeGuess").innerText=n;
-  document.getElementById("knowText").innerText="I already knew your name, "+n+".";
+  fakeGuess.innerText=n;
 }
 
-document.getElementById("nameSubmit").onclick=()=>{
-  let val=document.getElementById("nameEntry").value.trim();
+nameSubmit.onclick=()=>{
+  let val=nameEntry.value.trim();
   if(!validName(val)){ alert("Enter a real name."); return; }
-  val=capitalizeName(val);
-  setName(val);
+  setName(capitalizeName(val));
   closePopup();
 };
 
 window.onload=()=>{
   let saved=localStorage.getItem("horrorName");
   if(saved){ setName(saved); }
-  else{ openPopup(); }
+  else openPopup();
 };
 
-/* -------------------------------- */
-/* SCRIPTURES — ONE AT A TIME */
-/* -------------------------------- */
-
-const scriptures = [
+/* SCRIPTURES */
+const scriptures=[
   "The Lord is my light and my salvation — whom shall I fear? (Psalm 27:1)",
   "No weapon forged against you will prevail. (Isaiah 54:17)",
   "Even though I walk through the valley of the shadow of death, I will fear no evil. (Psalm 23:4)",
@@ -423,43 +361,38 @@ const scriptures = [
   "He will command His angels concerning you to guard you. (Psalm 91:11)"
 ];
 
-let scriptureIndex = 0;
-let scriptureInterval = null;
+let scriptureIndex=0, scriptureInterval=null;
 
 function startScriptureCycle(){
-  const box = document.getElementById("scriptureBox");
+  const box=document.getElementById("scriptureBox");
   if(scriptureInterval) clearInterval(scriptureInterval);
 
   function showNext(){
     if(!document.body.classList.contains("christianMode")) return;
-    box.innerText = scriptures[scriptureIndex];
-    box.style.opacity = 1;
-
-    setTimeout(()=>{ box.style.opacity = 0; }, 5000);
-
-    scriptureIndex = (scriptureIndex + 1) % scriptures.length;
+    box.innerText=scriptures[scriptureIndex];
+    box.style.opacity=1;
+    setTimeout(()=>box.style.opacity=0,5000);
+    scriptureIndex=(scriptureIndex+1)%scriptures.length;
   }
 
   showNext();
-  scriptureInterval = setInterval(showNext, 8000);
+  scriptureInterval=setInterval(showNext,8000);
 }
 
-/* -------------------------------- */
-/* MUSIC VISUALIZER — GLOW PULSE */
-/* -------------------------------- */
-
-const holyPulse = document.getElementById("holyPulse");
-
+/* PULSE */
 setInterval(()=>{
   if(!document.body.classList.contains("christianMode")) return;
-  let vol = Math.random() * 0.6 + 0.2; 
-  holyPulse.style.transform = `translate(-50%, -50%) scale(${1 + vol})`;
-  holyPulse.style.opacity = 0.3 + vol;
-}, 200);
+  let vol=Math.random()*0.6+0.2;
+  holyPulse.style.transform=`translate(-50%, -50%) scale(${1+vol})`;
+  holyPulse.style.opacity=0.3+vol;
+},200);
 
-/* -------------------------------- */
-/* HORROR LOGIC — UNCHANGED */
-/* -------------------------------- */
+/* HORROR BUTTONS */
+btn1.onclick=()=>showScare("dareScreen","How dare you, "+userName);
+btn2.onclick=()=>showScare("warnScreen","You were told not to look, "+userName);
+btn3.onclick=()=>showScare("stopScreen","You never listen, "+userName);
+btnAI.onclick=()=>showScare("aiScreen","SYSTEM FAILURE\n"+userName+", step away.");
+btnKnow.onclick=()=>showScare("nameScreen");
 
 function showScare(id,text){
   const s=document.getElementById(id);
@@ -469,30 +402,14 @@ function showScare(id,text){
   s.querySelector(".backBtn").style.display="block";
 }
 
+document.querySelectorAll(".backBtn").forEach(btn=>btn.onclick=(e)=>hideScare(e.target.parentElement.id));
+
 function hideScare(id){
   const s=document.getElementById(id);
-  s.style.opacity=0; s.style.pointerEvents="none";
+  s.style.opacity=0;
+  s.style.pointerEvents="none";
 }
-
-document.querySelectorAll(".backBtn").forEach(btn=> btn.onclick=(e)=> hideScare(e.target.parentElement.id));
-
-function activateGlobalBack(){
-  const b=document.getElementById("globalBack");
-  b.style.opacity=1; b.style.pointerEvents="auto";
-}
-
-btn1.onclick=()=>{ showScare("dareScreen","How dare you, "+userName); activateGlobalBack(); };
-btn2.onclick=()=>{ showScare("warnScreen","You were told not to look, "+userName); activateGlobalBack(); };
-btn3.onclick=()=>{ showScare("stopScreen","You never listen, "+userName); activateGlobalBack(); };
-btnAI.onclick=()=>{ showScare("aiScreen","SYSTEM FAILURE\n"+userName+", step away."); activateGlobalBack(); };
-btnKnow.onclick=()=>{ showScare("nameScreen"); activateGlobalBack(); };
-
-document.getElementById("globalBack").onclick=()=>{
-  document.querySelectorAll(".scareScreen").forEach(s=>{
-    s.style.opacity=0; s.style.pointerEvents="none";
-  });
-};
-
 </script>
+
 </body>
 </html>
