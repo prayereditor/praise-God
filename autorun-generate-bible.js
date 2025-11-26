@@ -1,7 +1,7 @@
 import fs from "fs";
 import https from "https";
 
-const url = "https://raw.githubusercontent.com/scrollmapper/bible_databases/master/json/kjv.json";
+const url = "https://raw.githubusercontent.com/thiagobodruk/bible/master/json/kjv.json";
 
 function generate() {
   console.log("Downloading KJV Bible…");
