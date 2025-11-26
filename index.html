@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Holy Scripture Sanctuary</title>
+<title>Holy Scripture Sanctuary — Complete Edition</title>
 
 <style>
 body {
@@ -15,12 +15,22 @@ body {
   text-align: center;
 }
 
+/* Radiant background glow transitions */
+body {
+  animation: bgPulse 18s infinite alternate ease-in-out;
+}
+@keyframes bgPulse {
+  0% { background-color: #f5ecd4; }
+  50% { background-color: #fff2cc; }
+  100% { background-color: #f8e8b8; }
+}
+
 /* Intro Overlay */
 #introOverlay {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: radial-gradient(circle, rgba(255,230,150,0.9), rgba(0,0,0,0.85));
+  background: radial-gradient(circle, rgba(255,230,150,0.92), rgba(0,0,0,0.88));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,59 +39,86 @@ body {
   opacity: 1;
   transition: opacity 2s ease;
 }
+
 #introCross {
-  font-size: 120px;
+  font-size: 150px;
   color: gold;
-  text-shadow: 0 0 25px gold;
+  text-shadow: 0 0 40px gold;
   animation: introGlow 3s infinite ease-in-out;
 }
 @keyframes introGlow {
-  0% { text-shadow: 0 0 25px gold; }
-  50% { text-shadow: 0 0 70px #fff6c2; }
-  100% { text-shadow: 0 0 25px gold; }
-}
-#introText {
-  margin-top: 20px;
-  font-size: 32px;
-  color: white;
-  text-shadow: 0 0 15px gold;
+  0% { text-shadow: 0 0 30px gold; }
+  50% { text-shadow: 0 0 110px #fff8c6; }
+  100% { text-shadow: 0 0 30px gold; }
 }
 
-/* Feather Particles */
+#introText {
+  margin-top: 20px;
+  font-size: 35px;
+  color: white;
+  text-shadow: 0 0 20px gold;
+}
+
+/* Full shimmering Trinity halo */
+#trinityHalo {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.haloRing {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid rgba(255,215,0,0.7);
+  animation: haloSpin 10s linear infinite;
+  box-shadow: 0 0 45px rgba(255,215,0,0.6);
+}
+.haloRing:nth-child(2) { animation-duration: 14s; border-color: rgba(255,255,170,0.7); }
+.haloRing:nth-child(3) { animation-duration: 20s; border-color: rgba(255,255,220,0.6); }
+
+@keyframes haloSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Feather system styles 1–4 */
 .feather {
   position: fixed;
   top: -10%;
-  width: 60px;
-  height: 60px;
-  background: url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30 5 C10 20 5 40 20 55 C40 65 55 40 45 20 Z" fill="white" fill-opacity="0.75"/></svg>');
+  width: 45px;
+  height: 45px;
   background-size: cover;
   opacity: 0.85;
   animation: featherFall linear infinite;
   pointer-events: none;
   z-index: 1;
 }
+
 @keyframes featherFall {
   0% { transform: translateY(-10vh) rotate(0deg); }
   100% { transform: translateY(120vh) rotate(360deg); }
 }
 
-#featherContainer { position: fixed; top:0; left:0; width:100%; height:100%; z-index: 1; }
-
-/* Halo */
-#bg-halo {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  box-shadow: 0 0 30px gold;
-  background: radial-gradient(circle, rgba(255,240,190,0.8), #fff);
-  position: absolute;
-  left: 50%; top: -20px;
-  transform: translateX(-50%);
-  z-index: 0;
-  transition: opacity 2s ease;
+#featherContainer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-/* Section containers */
+/* Feather SVGs */
+.feather.style1 { background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30 5 C10 20 5 40 20 55 C40 65 55 40 45 20 Z" fill="white" fill-opacity="0.75"/></svg>'); }
+.feather.style2 { background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M10 10 C30 0 50 20 40 40 C30 60 5 40 10 10Z" fill="white" fill-opacity="0.65"/></svg>'); }
+.feather.style3 { background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="18" fill="white" fill-opacity="0.5"/></svg>'); }
+.feather.style4 { background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="15" width="30" height="30" rx="10" fill="white" fill-opacity="0.55"/></svg>'); }
+
+/* Section UI */
 .section {
   margin: 25px auto;
   padding: 25px;
@@ -99,19 +136,8 @@ h2 {
 
 /* Carousel */
 .carouselContainer { position: relative; }
-
-.carousels {
-  display: flex;
-  overflow: hidden;
-  width: 100%;
-}
-
-.slide {
-  min-width: 100%;
-  padding: 20px;
-  display: none;
-}
-
+.carousels { display: flex; overflow: hidden; width: 100%; }
+.slide { min-width: 100%; padding: 20px; display: none; }
 .carouselArrow {
   cursor: pointer;
   padding: 10px;
@@ -120,12 +146,27 @@ h2 {
   border-radius: 6px;
 }
 
+/* Healing overlay */
+#healingOverlay {
+  position: fixed;
+  display: none;
+  top:0; left:0;
+  width:100%; height:100%;
+  backdrop-filter: blur(8px);
+  background: rgba(255,240,180,0.8);
+  z-index: 9998;
+  justify-content:center;
+  align-items:center;
+  font-size: 32px;
+  color: #8a6a1f;
+  text-shadow: 0 0 15px gold;
+}
 </style>
 </head>
 
 <body>
 
-<!-- Intro Overlay -->
+<!-- Intro -->
 <div id="introOverlay">
   <div id="introCross">✝</div>
   <div id="introText">Welcome to the Holy Scripture Sanctuary</div>
@@ -135,9 +176,18 @@ h2 {
 </div>
 
 <div id="featherContainer"></div>
-<div id="bg-halo"></div>
+
+<!-- Trinity Halo -->
+<div id="trinityHalo">
+  <div class="haloRing"></div>
+  <div class="haloRing"></div>
+  <div class="haloRing"></div>
+</div>
 
 <h1>Holy Scripture Sanctuary</h1>
+
+<!-- HEALING OVERLAY -->
+<div id="healingOverlay">God is Healing Your Heart…</div>
 
 <!-- Ambience -->
 <div class="section">
@@ -165,7 +215,7 @@ h2 {
 
 <!-- Psalm -->
 <div class="section">
-  <h2>Daily Psalm</h2>
+  <h2>Psalm of the Day</h2>
   <button id="psalmBtn">Get Psalm</button>
   <div id="psalmOut"></div>
 </div>
@@ -203,6 +253,20 @@ h2 {
   <textarea id="prayText" placeholder="Your prayer request..."></textarea>
   <button id="prayBtn">Submit</button>
   <div id="prayOut"></div>
+</div>
+
+<!-- 365-Day Bible Reading Plan -->
+<div class="section">
+  <h2>365‑Day Bible Plan</h2>
+  <button id="biblePlanBtn">Today's Reading</button>
+  <div id="biblePlanOut"></div>
+</div>
+
+<!-- Streak Tracker -->
+<div class="section">
+  <h2>Daily Worship Streak</h2>
+  <button id="markDayBtn">Mark Today as Completed</button>
+  <div id="streakOut">0-Day Streak</div>
 </div>
 
 <!-- Prayer Counters Carousel -->
@@ -250,19 +314,63 @@ h2 {
 </div>
 
 <script>
-/* Basic Data (trimmed lists, expandable later) */
-const verses = [
-  {ref:"John 3:16", text:"For God so loved the world..."},
-  {ref:"Psalm 23:1", text:"The Lord is my shepherd..."}
-];
-const devotionals = [
-  "Rest in the Lord today.",
-  "Christ walks beside you."
-];
-const psalms = ["Psalm 23", "Psalm 91"];
-const encouragements = ["God is with you.", "You are deeply loved."];
+/* ===================================================================
+   DATA LIBRARIES (EXPANDED)
+   =================================================================== */
 
-/* Intro Fade */
+/* Scripture (expanded mini version) */
+const verses = [
+  {ref:"John 3:16", text:"For God so loved the world that He gave His only Son..."},
+  {ref:"Psalm 23:1", text:"The Lord is my shepherd; I shall not want."},
+  {ref:"Isaiah 41:10", text:"Fear not, for I am with you."},
+  {ref:"Romans 8:28", text:"All things work together for good for those who love God."}
+];
+
+/* Devotionals (expanded) */
+const devotionals = [
+  "Rest in the peace only Christ provides today.",
+  "God walks beside you even when you cannot feel Him.",
+  "Lay your burdens at the cross — you are not alone.",
+  "God’s mercy renews every morning — including this one."
+];
+
+/* Psalms (expanded mini-set) */
+const psalms = [
+  "Psalm 23 — The Lord is My Shepherd",
+  "Psalm 91 — He Who Dwells in the Shelter of the Most High",
+  "Psalm 121 — I Lift My Eyes to the Hills"
+];
+
+/* Encouragements */
+const encouragements = [
+  "God is strengthening you right now.",
+  "You are deeply loved by your Heavenly Father.",
+  "There is purpose in your breath — keep going.",
+  "He has not abandoned you."
+];
+
+/* 365-Day Bible plan (compact cycles) */
+const biblePlan = [
+  "Genesis 1–3",
+  "Matthew 1–3",
+  "Psalm 1",
+  "Proverbs 1",
+  "John 1",
+  "Romans 1",
+  "Acts 1"
+];
+
+/* Load streak from storage */
+let streak = parseInt(localStorage.getItem("worshipStreak") || "0");
+let lastDay = localStorage.getItem("lastWorshipDay") || null;
+
+document.getElementById("streakOut").innerText = streak + "-Day Streak";
+
+/* ===================================================================
+   MAIN INTERACTIONS
+   =================================================================== */
+
+/* Intro fade */
 window.onload = () => {
   const intro = document.getElementById("introOverlay");
   const audio = document.getElementById("introAudio");
@@ -273,21 +381,16 @@ window.onload = () => {
   }, 3000);
 };
 
-/* Feathers */
+/* Feather spawner (4 styles) */
 function spawnFeather(){
   const f = document.createElement("div");
-  f.className = "feather";
+  f.className = "feather style" + (1 + Math.floor(Math.random()*4));
   f.style.left = Math.random() * 100 + "vw";
   f.style.animationDuration = 6 + Math.random() * 5 + "s";
   document.getElementById("featherContainer").appendChild(f);
   setTimeout(() => f.remove(), 12000);
 }
-setInterval(spawnFeather, 800);
-
-/* Halo shimmer */
-setInterval(() => {
-  document.getElementById("bg-halo").style.opacity = Math.random() * 0.4 + 0.6;
-}, 2000);
+setInterval(spawnFeather, 700);
 
 /* Ambience */
 document.getElementById("playAmbience").onclick = () => {
@@ -322,11 +425,10 @@ document.getElementById("psalmBtn").onclick = () => {
     psalms[d % psalms.length];
 };
 
-/* God Speaks To Me */
+/* God Speaks */
 document.getElementById("speakBtn").onclick = () => {
   const v = verses[Math.floor(Math.random() * verses.length)];
-  document.getElementById("speakOut").innerText =
-    v.ref + ": " + v.text;
+  document.getElementById("speakOut").innerText = `${v.ref}: ${v.text}`;
 };
 
 /* Encouragement */
@@ -346,20 +448,71 @@ document.getElementById("prayBtn").onclick = () => {
   document.getElementById("prayText").value = "";
 };
 
-/* Confession */
+/* Healing Overlay (Confession) */
 document.getElementById("confBtn").onclick = () => {
   const mood = document.getElementById("confMood").value;
   const text = document.getElementById("confText").value.trim();
+
   if (!text) {
     alert("Write your confession.");
     return;
   }
+
   document.getElementById("confOutput").innerHTML = `
     <b>You are forgiven in Christ.</b><br>
     <i>Mood:</i> ${mood}<br>
-    <p>God has heard your confession and offers healing.</p>
+    <p>God has heard your confession and is healing your heart.</p>
   `;
+
+  /* Healing overlay animation */
+  const overlay = document.getElementById("healingOverlay");
+  overlay.style.display = "flex";
+  overlay.style.opacity = 1;
+
+  setTimeout(() => {
+    overlay.style.transition = "opacity 2s";
+    overlay.style.opacity = 0;
+    setTimeout(() => {
+      overlay.style.display = "none";
+      overlay.style.transition = "";
+    }, 2000);
+  }, 1800);
+
   document.getElementById("confText").value = "";
+};
+
+/* 365-Day Bible Plan */
+document.getElementById("biblePlanBtn").onclick = () => {
+  const day = new Date().getDay();
+  document.getElementById("biblePlanOut").innerText =
+    biblePlan[day % biblePlan.length];
+};
+
+/* Daily Streak Tracker */
+document.getElementById("markDayBtn").onclick = () => {
+  const today = new Date().toDateString();
+
+  if (lastDay === today) {
+    alert("You already marked today!");
+    return;
+  }
+
+  if (lastDay) {
+    const diff = Math.floor(
+      (new Date(today) - new Date(lastDay)) / (1000*60*60*24)
+    );
+
+    if (diff === 1) streak++;
+    else streak = 1;
+  } else {
+    streak = 1;
+  }
+
+  lastDay = today;
+  localStorage.setItem("worshipStreak", streak);
+  localStorage.setItem("lastWorshipDay", today);
+
+  document.getElementById("streakOut").innerText = streak + "-Day Streak";
 };
 
 /* Prayer Counters */
@@ -379,12 +532,8 @@ document.getElementById("spReset").onclick = () => {
   sp = 0; document.getElementById("spCount").innerText = sp;
 };
 
-document.getElementById("blPray").onclick = () => {
-  bl++; document.getElementById("blCount").innerText = bl;
-};
-document.getElementById("blForgive").onclick = () => {
-  bl++; document.getElementById("blCount").innerText = bl;
-};
+document.getElementById("blPray").onclick =
+document.getElementById("blForgive").onclick =
 document.getElementById("blEnc").onclick = () => {
   bl++; document.getElementById("blCount").innerText = bl;
 };
@@ -396,13 +545,13 @@ document.getElementById("cpReset").onclick = () => {
   cp = 0; document.getElementById("cpCount").innerText = cp;
 };
 
-/* Carousel Controls */
+/* Carousel */
 let slideIndex = 0;
 const slides = document.querySelectorAll(".slide");
 
 function showSlide(i) {
-  slides.forEach((s, index) => {
-    s.style.display = index === i ? "block" : "none";
+  slides.forEach((s, idx) => {
+    s.style.display = idx === i ? "block" : "none";
   });
 }
 
@@ -417,7 +566,6 @@ document.getElementById("nextSlide").onclick = () => {
 };
 
 showSlide(0);
-
 </script>
 </body>
 </html>
