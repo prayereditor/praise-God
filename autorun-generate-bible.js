@@ -1,7 +1,5 @@
 import fs from "fs";
 import https from "https";
-
-// Canonical 66-book order
 const bookOrder = [
   "Genesis","Exodus","Leviticus","Numbers","Deuteronomy",
   "Joshua","Judges","Ruth","1Samuel","2Samuel","1Kings","2Kings",
