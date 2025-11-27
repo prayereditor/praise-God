@@ -2,336 +2,515 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Holy Scripture Sanctuary</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0b1226">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Holy Scripture Sanctuary — Complete Edition</title>
 
 <style>
 body {
   margin: 0;
-  font-family: "Segoe UI", system-ui, sans-serif;
-  background: #0b1226;
-  color: #f5eac1;
+  background: #f5ecd4;
+  font-family: Georgia, serif;
+  color: #4a3205;
+  overflow-x: hidden;
   text-align: center;
-  padding-bottom: 150px;
 }
 
-/* Cards */
-.section {
-  width: 92%;
-  margin: 22px auto;
-  padding: 22px;
-  background: #101b37;
-  border: 1.5px solid #c9a44e;
-  border-radius: 18px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.45);
+/* Radiant background glow transitions */
+body {
+  animation: bgPulse 18s infinite alternate ease-in-out;
+}
+@keyframes bgPulse {
+  0% { background-color: #f5ecd4; }
+  50% { background-color: #fff2cc; }
+  100% { background-color: #f8e8b8; }
 }
 
-h1, h2 {
-  color: #f5eac1;
-  margin-bottom: 12px;
-}
-
-/* Buttons */
-button {
-  background: #c9a44e;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 10px;
-  margin: 8px;
-  color: #0b1226;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 0 12px rgba(201,164,78,0.45);
-}
-button:active { transform: scale(0.96); }
-
-/* Select boxes */
-select {
-  width: 85%;
-  padding: 12px;
-  margin: 8px 0;
-  font-size: 16px;
-  background: #f5eac1;
-  color: #0b1226;
-  border-radius: 10px;
-  border: none;
-}
-
-/* Night toggle */
-#nightToggle {
+/* Intro Overlay */
+#introOverlay {
   position: fixed;
-  top: 12px;
-  right: 12px;
-  padding: 10px 16px;
-  border-radius: 12px;
-  background: #c9a44e;
-  font-weight: bold;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(circle, rgba(255,230,150,0.92), rgba(0,0,0,0.88));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   z-index: 9999;
+  opacity: 1;
+  transition: opacity 2s ease;
 }
 
-/* Bible Reader Modal */
-#bibleReaderOverlay {
+#introCross {
+  font-size: 150px;
+  color: gold;
+  text-shadow: 0 0 40px gold;
+  animation: introGlow 3s infinite ease-in-out;
+}
+@keyframes introGlow {
+  0% { text-shadow: 0 0 30px gold; }
+  50% { text-shadow: 0 0 110px #fff8c6; }
+  100% { text-shadow: 0 0 30px gold; }
+}
+
+#introText {
+  margin-top: 20px;
+  font-size: 35px;
+  color: white;
+  text-shadow: 0 0 20px gold;
+}
+
+/* Trinity Halo */
+#trinityHalo {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.haloRing {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid rgba(255,215,0,0.7);
+  animation: haloSpin 10s linear infinite;
+  box-shadow: 0 0 45px rgba(255,215,0,0.6);
+}
+.haloRing:nth-child(2) { animation-duration: 14s; border-color: rgba(255,255,170,0.7); }
+.haloRing:nth-child(3) { animation-duration: 20s; border-color: rgba(255,255,220,0.6); }
+
+@keyframes haloSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Falling feathers */
+.feather {
+  position: fixed;
+  top: -10%;
+  width: 45px;
+  height: 45px;
+  opacity: 0.85;
+  animation: featherFall linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes featherFall {
+  0% { transform: translateY(-10vh) rotate(0deg); }
+  100% { transform: translateY(120vh) rotate(360deg); }
+}
+#featherContainer { position: fixed; width: 100%; height: 100%; z-index: 1; }
+
+/* Section UI */
+.section {
+  margin: 25px auto;
+  padding: 25px;
+  max-width: 900px;
+  background: #fff7e1;
+  border: 2px solid #d3a84e;
+  border-radius: 12px;
+  box-shadow: 0 0 18px rgba(0,0,0,0.15);
+}
+
+h2 {
+  color: #8a6a1f;
+  text-shadow: 0 0 4px #f4e3b2;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background: #e3c877;
+  border: 1px solid #a0833f;
+  border-radius: 8px;
+  font-size: 18px;
+  color: #4a3205;
+}
+button:hover { background: #f1d890; cursor: pointer; }
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  background: #fff4d3;
+  border: 1px solid #d0b273;
+  border-radius: 6px;
+  color: #4a3205;
+}
+
+.displayBox {
+  margin-top: 10px;
+  padding: 15px;
+  background: #fff0c8;
+  border-radius: 10px;
+  border: 1px solid #d0b273;
+}
+
+/* Streak text */
+#streakOut { font-size: 20px; margin-top: 10px; }
+
+/* Healing Overlay */
+#healingOverlay {
   position: fixed;
   top:0; left:0;
   width:100%; height:100%;
   display:none;
-  flex-direction:column;
-  background:#0b1226;
-  padding:20px;
+  backdrop-filter: blur(8px);
+  background: rgba(255,240,180,0.8);
   z-index:9998;
-}
-
-#bibleReaderBox {
-  flex:1;
-  overflow-y:auto;
-  text-align:left;
-  padding:22px;
-  border:2px solid #c9a44e;
-  border-radius:14px;
-  background:#101b37;
-  font-size:19px;
-  line-height:1.6;
-}
-
-#bibleReaderControls {
-  margin-top:14px;
-  display:flex;
-  flex-wrap:wrap;
   justify-content:center;
-  gap:12px;
+  align-items:center;
+  font-size: 32px;
+  color:#8a6a1f;
+  text-shadow:0 0 15px gold;
 }
 
-/* Music Bar */
-#musicBar {
-  position: fixed;
-  bottom:0; left:0;
-  width:100%;
-  background:#101b37;
-  border-top:1.5px solid #c9a44e;
-  padding:14px;
-  box-shadow: 0 -4px 18px rgba(0,0,0,0.4);
-}
-
-#currentSong {
-  margin-bottom:6px;
-  font-size:15px;
-}
-
-/* Night Mode */
-body.night {
-  background:#f5eac1;
-  color:#0b1226;
-}
-body.night .section {
-  background:#fffdf6;
-  border-color:#c9a44e;
-}
-body.night #bibleReaderOverlay {
-  background:#fffdf6;
-}
-body.night #bibleReaderBox {
-  background:#fffdf6;
-  color:#0b1226;
-}
-body.night button {
-  background:#0b1226;
-  color:#f5eac1;
-}
-body.night select {
-  background:#0b1226;
-  color:#f5eac1;
-}
-body.night #musicBar {
-  background:#fffdf6;
-  border-color:#c9a44e;
+/* Carousel */
+.carouselContainer { position:relative; }
+.carousels { display:flex; overflow:hidden; width:100%; }
+.slide { min-width:100%; padding:20px; display:none; }
+.carouselArrow {
+  cursor:pointer;
+  padding:10px;
+  margin:5px;
+  background:#e3c877;
+  border:1px solid #a0833f;
+  border-radius:6px;
 }
 </style>
 </head>
+
 <body>
 
-<button id="nightToggle" onclick="toggleNightMode()">Night</button>
+<!-- ===================== INTRO ===================== -->
+<div id="introOverlay">
+  <div id="introCross">✝</div>
+  <div id="introText">Welcome to the Holy Scripture Sanctuary</div>
+  <audio id="introAudio">
+    <source src="https://files.catbox.moe/iqqvwu.mp3">
+  </audio>
+</div>
+
+<div id="featherContainer"></div>
+
+<div id="trinityHalo">
+  <div class="haloRing"></div>
+  <div class="haloRing"></div>
+  <div class="haloRing"></div>
+</div>
 
 <h1>Holy Scripture Sanctuary</h1>
 
+<!-- ===================== HEALING OVERLAY ===================== -->
+<div id="healingOverlay">God is Healing Your Heart…</div>
 
-<!-- BIBLE READER -->
+<!-- ===================== NIGHT MODE ===================== -->
 <div class="section">
-  <h2>Read the Holy Bible</h2>
-
-  <select id="bibleBook"></select>
-  <select id="bibleChapter"></select>
-
-  <button onclick="openBibleReader()">Open Bible Reader</button>
+  <h2>Appearance</h2>
+  <button onclick="toggleNight()">Toggle Night Mode</button>
 </div>
 
-
-<!-- BIBLE READER MODAL -->
-<div id="bibleReaderOverlay">
-  <div id="bibleReaderBox"></div>
-
-  <div id="bibleReaderControls">
-    <button onclick="closeBibleReader()">Close</button>
-    <button onclick="toggleScroll()">Start Scroll</button>
-    <button onclick="scrollFaster()">Faster</button>
-    <button onclick="scrollSlower()">Slower</button>
-  </div>
-</div>
-
-
-<!-- WORSHIP MUSIC (Modernized, Original Labels) -->
+<!-- ===================== BIBLE READER ===================== -->
 <div class="section">
-  <h2 style="margin-bottom: 18px;">Worship Music</h2>
-
-  <div style="display: flex; flex-direction: column; gap: 12px;">
-
-    <button onclick="playSong('gospel')" style="width: 100%;">Use This Gospel</button>
-    <button onclick="playSong('holy')" style="width: 100%;">Holy Forever</button>
-
-    <div style="margin-top: 10px;">
-      <button onclick="togglePlayPause()">Play / Pause</button>
-      <button onclick="stopMusic()">Stop</button>
-    </div>
-  </div>
+  <h2>Bible Reader (KJV)</h2>
+  <input id="bibleRef" placeholder="Genesis 1, John 3, Romans 8:28">
+  <button onclick="loadBible()">Open Bible</button>
+  <button onclick="startScroll()">Start Auto‑Scroll</button>
+  <button onclick="fasterScroll()">Faster</button>
+  <button onclick="slowerScroll()">Slower</button>
+  <button onclick="stopScroll()">Stop</button>
+  <div id="bibleOut" class="displayBox">Enter a passage.</div>
 </div>
 
+<!-- ===================== MUSIC ===================== -->
+<div class="section">
+  <h2>Worship Music</h2>
 
-<!-- DEVOTIONAL SECTIONS -->
+  <button onclick="playSpecific('gospel')">Play: Use This Gospel</button>
+  <button onclick="playSpecific('holy')">Play: Holy Forever</button>
+
+  <button onclick="playPlaylist()">Play/Pause Playlist</button>
+  <button onclick="stopMusic()">Stop Music</button>
+
+  <div id="musicNow">No song playing.</div>
+</div>
+
+<!-- ===================== PSALM ===================== -->
 <div class="section">
   <h2>Psalm of the Day</h2>
-  <button onclick="revealPsalm()">Reveal Psalm</button>
-  <p id="psalmDisplay"></p>
+  <button onclick="loadPsalm()">Get Psalm</button>
+  <div id="psalmOut" class="displayBox"></div>
 </div>
 
+<!-- ===================== CONFESSION ===================== -->
+<div class="section">
+  <h2>Confession & Healing</h2>
+  <select id="confMood">
+    <option value="guilt">Guilt</option>
+    <option value="shame">Shame</option>
+    <option value="regret">Regret</option>
+  </select>
+  <textarea id="confText" placeholder="Write your confession..."></textarea>
+  <button onclick="confess()">Begin Healing</button>
+  <div id="confOut" class="displayBox"></div>
+</div>
+
+<!-- ===================== SPEAK LORD ===================== -->
+<div class="section">
+  <h2>God Speaks To Me</h2>
+  <button onclick="speak()">Speak, Lord</button>
+  <div id="speakOut" class="displayBox"></div>
+</div>
+
+<!-- ===================== ENCOURAGEMENT ===================== -->
 <div class="section">
   <h2>Encouragement</h2>
-  <button onclick="encourageMe()">Encourage Me</button>
-  <p id="encourageDisplay"></p>
+  <button onclick="enc()">Encourage Me</button>
+  <div id="encOut" class="displayBox"></div>
+</div>
+
+<!-- ===================== PRAYER REQUEST ===================== -->
+<div class="section">
+  <h2>Prayer Request</h2>
+  <textarea id="prayText" placeholder="Your request..."></textarea>
+  <button onclick="sendPrayer()">Submit</button>
+  <div id="prayOut" class="displayBox"></div>
+</div>
+
+<!-- ===================== 365 PLAN ===================== -->
+<div class="section">
+  <h2>365‑Day Bible Plan</h2>
+  <button onclick="loadPlan()">Today's Reading</button>
+  <button onclick="markDay()">Mark Completed</button>
+  <div id="planOut" class="displayBox"></div>
+</div>
+
+<!-- ===================== STREAK ===================== -->
+<div class="section">
+  <h2>Daily Worship Streak</h2>
+  <div id="streakOut">0-Day Streak</div>
+</div>
+
+<!-- ===================== PRAYER COUNTERS ===================== -->
+<div class="section carouselContainer">
+  <h2>Prayer Counters</h2>
+
+  <div class="carousels">
+    <div class="slide" id="slide1">
+      <h3>Jesus Prayer</h3>
+      <button onclick="jp++ ; updateJP()">+1</button>
+      <button onclick="jp=0 ; updateJP()">Reset</button>
+      <div id="jpOut">0</div>
+    </div>
+
+    <div class="slide" id="slide2">
+      <h3>Scripture Prayer</h3>
+      <button onclick="sp++ ; updateSP()">+1</button>
+      <button onclick="sp=0 ; updateSP()">Reset</button>
+      <div id="spOut">0</div>
+    </div>
+
+    <div class="slide" id="slide3">
+      <h3>Blessing Counter</h3>
+      <button onclick="bl++ ; updateBL()">I Prayed</button>
+      <button onclick="bl++ ; updateBL()">I Forgave</button>
+      <button onclick="bl++ ; updateBL()">I Encouraged</button>
+      <button onclick="bl=0 ; updateBL()">Reset</button>
+      <div id="blOut">0</div>
+    </div>
+
+    <div class="slide" id="slide4">
+      <h3>Custom Counter</h3>
+      <button onclick="cp++ ; updateCP()">+1</button>
+      <button onclick="cp=0 ; updateCP()">Reset</button>
+      <div id="cpOut">0</div>
+    </div>
+  </div>
+
+  <button class="carouselArrow" onclick="prevSlide()">◀</button>
+  <button class="carouselArrow" onclick="nextSlide()">▶</button>
 </div>
 
 
-<!-- MUSIC BAR -->
-<div id="musicBar">
-  <div id="currentSong">No song playing</div>
-  <button onclick="togglePlayPause()">Play/Pause</button>
-  <button onclick="stopMusic()">Stop</button><br>
-
-  <input type="range" id="musicProgress" min="0" max="100" value="0" style="width:80%; margin-top:6px;">
-  <br>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" style="width:80%; margin-top:6px;">
-</div>
-
-<audio id="musicPlayer"></audio>
-
+<!-- ==============================================
+     JAVASCRIPT
+================================================= -->
 
 <script>
-function toggleNightMode() {
-  document.body.classList.toggle("night");
-}
-
-const bibleBooks = [
-"Genesis","Exodus","Leviticus","Numbers","Deuteronomy",
-"Joshua","Judges","Ruth","1 Samuel","2 Samuel",
-"1 Kings","2 Kings","1 Chronicles","2 Chronicles",
-"Ezra","Nehemiah","Esther","Job","Psalms","Proverbs",
-"Ecclesiastes","Song of Solomon","Isaiah","Jeremiah",
-"Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos",
-"Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah",
-"Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John",
-"Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians",
-"Philippians","Colossians","1 Thessalonians","2 Thessalonians",
-"1 Timothy","2 Timothy","Titus","Philemon","Hebrews",
-"James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"
-];
-
-const bookSelect = document.getElementById("bibleBook");
-const chapterSelect = document.getElementById("bibleChapter");
-
-bibleBooks.forEach(book=>{
-  let o = document.createElement("option");
-  o.value = book;
-  o.textContent = book;
-  bookSelect.appendChild(o);
-});
-
-bookSelect.onchange = async () => {
-  chapterSelect.innerHTML = "";
-  const clean = bookSelect.value.replace(/\s+/g,"");
-  const res = await fetch(`bible/${clean}.json`);
-  const data = await res.json();
-
-  Object.keys(data).forEach(ch=>{
-    let o=document.createElement("option");
-    o.value=ch;
-    o.textContent="Chapter "+ch;
-    chapterSelect.appendChild(o);
-  });
+/* INTRO */
+window.onload = () => {
+  const intro = document.getElementById("introOverlay");
+  document.getElementById("introAudio").play().catch(()=>{});
+  setTimeout(() => {
+    intro.style.opacity = 0;
+    setTimeout(() => intro.style.display="none", 2000);
+  }, 3000);
 };
 
-bookSelect.dispatchEvent(new Event("change"));
-
+/* NIGHT MODE */
+function toggleNight() {
+  if (document.body.style.background === "black") {
+    document.body.style.background = "#f5ecd4";
+    document.body.style.color = "#4a3205";
+  } else {
+    document.body.style.background = "black";
+    document.body.style.color = "white";
+  }
+}
 
 /* BIBLE READER */
-let scrollSpeed=0.8;
-let scrollInterval=null;
-
-async function openBibleReader(){
-  const book = bookSelect.value.replace(/\s+/g,"");
-  const chapter = chapterSelect.value;
-
-  const res = await fetch(`bible/${book}.json`);
-  const data = await res.json();
-
-  let html = `<h2>${bookSelect.value} ${chapter}</h2>`;
-  const verses = data[chapter];
-
-  Object.keys(verses).forEach(v=>{
-    html += `<p><b>${v}</b> ${verses[v]}</p>`;
-  });
-
-  document.getElementById("bibleReaderBox").innerHTML = html;
-  document.getElementById("bibleReaderOverlay").style.display="flex";
+async function loadBible() {
+  const ref = document.getElementById("bibleRef").value;
+  if (!ref) return alert("Enter a reference.");
+  document.getElementById("bibleOut").innerText = "Loading…";
+  const r = await fetch("https://bible-api.com/" + encodeURIComponent(ref) + "?translation=kjv");
+  const d = await r.json();
+  document.getElementById("bibleOut").innerText = d.text || "Not found.";
 }
 
-function closeBibleReader(){
-  document.getElementById("bibleReaderOverlay").style.display="none";
-  stopAutoScroll();
-}
+/* AUTO SCROLL */
+let scrolling=false,speed=1;
+function startScroll(){scrolling=true;scrollLoop();}
+function scrollLoop(){ if(scrolling){window.scrollBy(0,speed); setTimeout(scrollLoop,50);} }
+function fasterScroll(){speed++;}
+function slowerScroll(){if(speed>1)speed--;}
+function stopScroll(){scrolling=false;}
 
-function toggleScroll(){ scrollInterval ? stopAutoScroll() : startAutoScroll(); }
-function startAutoScroll(){
-  scrollInterval=setInterval(()=>{
-    document.getElementById("bibleReaderBox").scrollTop+=scrollSpeed;
-  },50);
-}
-function stopAutoScroll(){ clearInterval(scrollInterval); scrollInterval=null; }
-function scrollFaster(){ scrollSpeed+=0.3; }
-function scrollSlower(){ scrollSpeed=Math.max(0.3,scrollSpeed-0.3); }
-
-
-/* MUSIC PLAYER */
-const musicPlayer=document.getElementById("musicPlayer");
-const songs={
-  gospel:{title:"Use This Gospel",url:"https://files.catbox.moe/frtvpr.mp3"},
-  holy:{title:"Holy Forever",url:"https://files.catbox.moe/q0n9yh.mp3"}
+/* MUSIC */
+let audio = new Audio();
+const songs = {
+  holy:"https://files.catbox.moe/q0n9yh.mp3",
+  gospel:"https://files.catbox.moe/frtvpr.mp3"
 };
-
-function playSong(s){
-  musicPlayer.src=songs[s].url;
-  document.getElementById("currentSong").textContent=songs[s].title;
-  musicPlayer.play();
+function playSpecific(type){
+  stopMusic();
+  audio.src=songs[type];
+  audio.play();
+  document.getElementById("musicNow").innerText =
+    "Playing: " + (type==="holy"?"Holy Forever":"Use This Gospel");
 }
-function togglePlayPause(){ musicPlayer.paused?musicPlayer.play():musicPlayer.pause(); }
-function stopMusic(){ musicPlayer.pause(); musicPlayer.currentTime=0; }
-
-
-/* PWA */
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("service-worker.js");
+const playlist=[
+  {name:"Holy Forever",url:songs.holy},
+  {name:"Use This Gospel",url:songs.gospel}
+];
+let cur=0;
+function playPlaylist(){
+  if(audio.paused){
+    audio.src=playlist[cur].url; audio.play();
+    document.getElementById("musicNow").innerText="Playing: "+playlist[cur].name;
+  } else {
+    audio.pause(); document.getElementById("musicNow").innerText="Paused";
+  }
 }
+function stopMusic(){
+  audio.pause(); audio.currentTime=0;
+  document.getElementById("musicNow").innerText="Stopped";
+}
+
+/* PSALM */
+function loadPsalm(){
+  const arr=["Psalm 23 — The Lord is my Shepherd","Psalm 91 — He is my refuge","Psalm 121 — Help comes from the Lord"];
+  document.getElementById("psalmOut").innerText = arr[new Date().getDate()%arr.length];
+}
+
+/* CONFESSION */
+function confess(){
+  const mood = document.getElementById("confMood").value;
+  let msg = "";
+  if (mood==="guilt") msg="You are forgiven in Christ.";
+  if (mood==="shame") msg="God lifts your shame away.";
+  if (mood==="regret") msg="Your past is redeemed.";
+
+  document.getElementById("confOut").innerHTML = msg;
+
+  const overlay=document.getElementById("healingOverlay");
+  overlay.style.display="flex";
+  overlay.style.opacity=1;
+  setTimeout(()=>{
+    overlay.style.transition="opacity 2s";
+    overlay.style.opacity=0;
+    setTimeout(()=>overlay.style.display="none",2000);
+  },1500);
+}
+
+/* SPEAK LORD */
+function speak(){
+  const arr=[
+    "John 3:16 — For God so loved the world…",
+    "Romans 8:28 — All things work together for good…",
+    "Isaiah 41:10 — Fear not, for I am with you."
+  ];
+  document.getElementById("speakOut").innerText = arr[Math.floor(Math.random()*arr.length)];
+}
+
+/* ENCOURAGEMENT */
+function enc(){
+  const arr=[
+    "God is strengthening you right now.",
+    "You are not alone.",
+    "The Lord is your refuge and fortress."
+  ];
+  document.getElementById("encOut").innerText = arr[Math.floor(Math.random()*arr.length)];
+}
+
+/* PRAYER */
+function sendPrayer(){
+  const t=document.getElementById("prayText").value;
+  if(!t) return alert("Write a request.");
+  document.getElementById("prayOut").innerText="Your prayer has been lifted.";
+  document.getElementById("prayText").value="";
+}
+
+/* 365 PLAN */
+function loadPlan(){
+  const arr=["Genesis 1–3","Matthew 1–3","Psalm 1","John 1"];
+  document.getElementById("planOut").innerText = arr[new Date().getDay()%arr.length];
+}
+
+/* STREAK */
+let streak=Number(localStorage.getItem("streak")||0);
+let last = localStorage.getItem("lastDay");
+document.getElementById("streakOut").innerText=streak+"-Day Streak";
+function markDay(){
+  const today=new Date().toDateString();
+  if(last===today)return alert("Already marked today.");
+  if(last){
+    const diff=(new Date(today)-new Date(last))/(1000*60*60*24);
+    streak = diff===1 ? streak+1 : 1;
+  } else streak=1;
+  last=today;
+  localStorage.setItem("streak",streak);
+  localStorage.setItem("lastDay",today);
+  document.getElementById("streakOut").innerText=streak+"-Day Streak";
+}
+
+/* COUNTERS */
+let jp=0,sp=0,bl=0,cp=0;
+function updateJP(){document.getElementById("jpOut").innerText=jp;}
+function updateSP(){document.getElementById("spOut").innerText=sp;}
+function updateBL(){document.getElementById("blOut").innerText=bl;}
+function updateCP(){document.getElementById("cpOut").innerText=cp;}
+
+/* CAROUSEL */
+let slideIndex=0;
+const slides=document.querySelectorAll(".slide");
+function showSlide(i){
+  slides.forEach((s,idx)=>s.style.display = idx===i ? "block":"none");
+}
+function nextSlide(){
+  slideIndex=(slideIndex+1)%slides.length;
+  showSlide(slideIndex);
+}
+function prevSlide(){
+  slideIndex=(slideIndex-1+slides.length)%slides.length;
+  showSlide(slideIndex);
+}
+showSlide(0);
 </script>
+
 </body>
 </html>
