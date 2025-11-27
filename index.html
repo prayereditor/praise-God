@@ -6,6 +6,7 @@
 <title>Holy Scripture Sanctuary — Complete Edition</title>
 
 <style>
+/* ROOT APP STYLE — PARCHMENT THEME */
 body {
   margin: 0;
   background: #f5ecd4;
@@ -13,19 +14,17 @@ body {
   color: #4a3205;
   overflow-x: hidden;
   text-align: center;
-}
-
-/* Radiant background glow transitions */
-body {
   animation: bgPulse 18s infinite alternate ease-in-out;
 }
+
+/* Background glow animation */
 @keyframes bgPulse {
   0% { background-color: #f5ecd4; }
   50% { background-color: #fff2cc; }
   100% { background-color: #f8e8b8; }
 }
 
-/* Intro Overlay */
+/* INTRO OVERLAY */
 #introOverlay {
   position: fixed;
   top: 0; left: 0;
@@ -59,7 +58,7 @@ body {
   text-shadow: 0 0 20px gold;
 }
 
-/* Trinity Halo */
+/* TRINITY HALO */
 #trinityHalo {
   position: absolute;
   top: -30px;
@@ -69,25 +68,30 @@ body {
   transform: translateX(-50%);
   z-index: 0;
 }
-
 .haloRing {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   border: 4px solid rgba(255,215,0,0.7);
-  animation: haloSpin 10s linear infinite;
+  animation: haloSpin 12s linear infinite;
   box-shadow: 0 0 45px rgba(255,215,0,0.6);
 }
-.haloRing:nth-child(2) { animation-duration: 14s; border-color: rgba(255,255,170,0.7); }
-.haloRing:nth-child(3) { animation-duration: 20s; border-color: rgba(255,255,220,0.6); }
+.haloRing:nth-child(2) { animation-duration: 16s; border-color: rgba(255,255,200,0.7); }
+.haloRing:nth-child(3) { animation-duration: 22s; border-color: rgba(255,255,255,0.6); }
 
 @keyframes haloSpin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Falling feathers */
+/* FALLING FEATHERS */
+#featherContainer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
 .feather {
   position: fixed;
   top: -10%;
@@ -95,16 +99,13 @@ body {
   height: 45px;
   opacity: 0.85;
   animation: featherFall linear infinite;
-  pointer-events: none;
-  z-index: 1;
 }
 @keyframes featherFall {
   0% { transform: translateY(-10vh) rotate(0deg); }
   100% { transform: translateY(120vh) rotate(360deg); }
 }
-#featherContainer { position: fixed; width: 100%; height: 100%; z-index: 1; }
 
-/* Section UI */
+/* SECTION BOXES — PARCHMENT CARDS */
 .section {
   margin: 25px auto;
   padding: 25px;
@@ -115,53 +116,78 @@ body {
   box-shadow: 0 0 18px rgba(0,0,0,0.15);
 }
 
-h2 {
+/* HEADERS */
+h1, h2 {
   color: #8a6a1f;
   text-shadow: 0 0 4px #f4e3b2;
 }
 
+/* BUTTONS */
 button {
   width: 100%;
   padding: 14px;
-  margin-top: 10px;
   background: #e3c877;
   border: 1px solid #a0833f;
   border-radius: 8px;
   font-size: 18px;
+  margin-top: 10px;
   color: #4a3205;
 }
-button:hover { background: #f1d890; cursor: pointer; }
+button:hover { background: #f1d890; }
 
+/* INPUTS */
 input, textarea {
   width: 100%;
   padding: 10px;
-  margin-top: 8px;
   background: #fff4d3;
   border: 1px solid #d0b273;
-  border-radius: 6px;
   color: #4a3205;
+  border-radius: 6px;
+  margin-top: 8px;
 }
 
-.displayBox {
-  margin-top: 10px;
+/* DISPLAY BOXES */
+.display {
   padding: 15px;
   background: #fff0c8;
-  border-radius: 10px;
   border: 1px solid #d0b273;
+  border-radius: 8px;
+  margin-top: 10px;
+  white-space: pre-wrap;
 }
 
-/* Streak text */
-#streakOut { font-size: 20px; margin-top: 10px; }
+/* NIGHT MODE */
+.night {
+  background: #0b0a07 !important;
+  color: #f5f0e6;
+}
+.night .section {
+  background: #1c1c1c;
+  border-color: #555;
+}
+.night button {
+  background: #444;
+  color: white;
+}
+.night input, .night textarea {
+  background: #333;
+  border-color: #666;
+  color: white;
+}
+.night .display {
+  background: #222;
+  border-color: #555;
+}
 
-/* Healing Overlay */
+/* HEALING OVERLAY */
 #healingOverlay {
   position: fixed;
+  display: none;
   top:0; left:0;
   width:100%; height:100%;
-  display:none;
   backdrop-filter: blur(8px);
   background: rgba(255,240,180,0.8);
-  z-index:9998;
+  z-index: 9998;
   justify-content:center;
   align-items:center;
   font-size: 32px;
@@ -169,24 +195,19 @@ input, textarea {
   text-shadow:0 0 15px gold;
 }
 
-/* Carousel */
-.carouselContainer { position:relative; }
-.carousels { display:flex; overflow:hidden; width:100%; }
-.slide { min-width:100%; padding:20px; display:none; }
-.carouselArrow {
-  cursor:pointer;
-  padding:10px;
-  margin:5px;
-  background:#e3c877;
-  border:1px solid #a0833f;
-  border-radius:6px;
+/* COUNTERS CAROUSEL */
+.carousel {
+  display: none;
+}
+.activeSlide {
+  display: block;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===================== INTRO ===================== -->
+<!-- ====================== INTRO ======================= -->
 <div id="introOverlay">
   <div id="introCross">✝</div>
   <div id="introText">Welcome to the Holy Scripture Sanctuary</div>
@@ -205,311 +226,292 @@ input, textarea {
 
 <h1>Holy Scripture Sanctuary</h1>
 
-<!-- ===================== HEALING OVERLAY ===================== -->
+<!-- HEALING OVERLAY -->
 <div id="healingOverlay">God is Healing Your Heart…</div>
 
-<!-- ===================== NIGHT MODE ===================== -->
+<!-- APPEARANCE -->
 <div class="section">
   <h2>Appearance</h2>
   <button onclick="toggleNight()">Toggle Night Mode</button>
 </div>
 
-<!-- ===================== BIBLE READER ===================== -->
+<!-- BIBLE READER -->
 <div class="section">
   <h2>Bible Reader (KJV)</h2>
-  <input id="bibleRef" placeholder="Genesis 1, John 3, Romans 8:28">
+  <input id="bibleRef" placeholder="John 3:16, Genesis 1, etc.">
   <button onclick="loadBible()">Open Bible</button>
   <button onclick="startScroll()">Start Auto‑Scroll</button>
-  <button onclick="fasterScroll()">Faster</button>
-  <button onclick="slowerScroll()">Slower</button>
+  <button onclick="scrollSpeed++">Faster</button>
+  <button onclick="scrollSpeed = Math.max(1, scrollSpeed-1)">Slower</button>
   <button onclick="stopScroll()">Stop</button>
-  <div id="bibleOut" class="displayBox">Enter a passage.</div>
+  <div id="bibleOut" class="display">Enter a reference.</div>
 </div>
 
-<!-- ===================== MUSIC ===================== -->
+<!-- MUSIC -->
 <div class="section">
   <h2>Worship Music</h2>
 
-  <button onclick="playSpecific('gospel')">Play: Use This Gospel</button>
-  <button onclick="playSpecific('holy')">Play: Holy Forever</button>
+  <button onclick="playSong('gospel')">Play: Use This Gospel</button>
+  <button onclick="playSong('holy')">Play: Holy Forever</button>
 
-  <button onclick="playPlaylist()">Play/Pause Playlist</button>
+  <button onclick="togglePlaylist()">Play/Pause Playlist</button>
   <button onclick="stopMusic()">Stop Music</button>
 
-  <div id="musicNow">No song playing.</div>
+  <div id="musicOut" class="display">No song playing.</div>
 </div>
 
-<!-- ===================== PSALM ===================== -->
+<!-- PSALM -->
 <div class="section">
   <h2>Psalm of the Day</h2>
-  <button onclick="loadPsalm()">Get Psalm</button>
-  <div id="psalmOut" class="displayBox"></div>
+  <button onclick="loadPsalm()">Reveal Psalm</button>
+  <div id="psalmOut" class="display"></div>
 </div>
 
-<!-- ===================== CONFESSION ===================== -->
+<!-- CONFESSION -->
 <div class="section">
   <h2>Confession & Healing</h2>
-  <select id="confMood">
-    <option value="guilt">Guilt</option>
-    <option value="shame">Shame</option>
-    <option value="regret">Regret</option>
-  </select>
-  <textarea id="confText" placeholder="Write your confession..."></textarea>
-  <button onclick="confess()">Begin Healing</button>
-  <div id="confOut" class="displayBox"></div>
+  <button onclick="feel='Broken'">Broken</button>
+  <button onclick="feel='Guilty'">Guilty</button>
+  <button onclick="feel='Anxious'">Anxious</button>
+  <button onclick="feel='Ashamed'">Ashamed</button>
+  <button onclick="feel='Tired'">Tired</button>
+  <button onclick="feel='Confused'">Confused</button>
+
+  <button onclick="submitConfession()">Submit Confession</button>
+  <div id="confOut" class="display"></div>
 </div>
 
-<!-- ===================== SPEAK LORD ===================== -->
+<!-- SPEAK -->
 <div class="section">
   <h2>God Speaks To Me</h2>
   <button onclick="speak()">Speak, Lord</button>
-  <div id="speakOut" class="displayBox"></div>
+  <div id="speakOut" class="display"></div>
 </div>
 
-<!-- ===================== ENCOURAGEMENT ===================== -->
+<!-- ENCOURAGEMENT -->
 <div class="section">
   <h2>Encouragement</h2>
-  <button onclick="enc()">Encourage Me</button>
-  <div id="encOut" class="displayBox"></div>
+  <button onclick="encourage()">Encourage Me</button>
+  <div id="encOut" class="display"></div>
 </div>
 
-<!-- ===================== PRAYER REQUEST ===================== -->
+<!-- PRAYER REQUEST -->
 <div class="section">
   <h2>Prayer Request</h2>
-  <textarea id="prayText" placeholder="Your request..."></textarea>
+  <textarea id="prayBox" placeholder="Your prayer..."></textarea>
   <button onclick="sendPrayer()">Submit</button>
-  <div id="prayOut" class="displayBox"></div>
+  <div id="prayOut" class="display"></div>
 </div>
 
-<!-- ===================== 365 PLAN ===================== -->
+<!-- 365 PLAN -->
 <div class="section">
   <h2>365‑Day Bible Plan</h2>
   <button onclick="loadPlan()">Today's Reading</button>
-  <button onclick="markDay()">Mark Completed</button>
-  <div id="planOut" class="displayBox"></div>
+  <button onclick="markDay()">Mark Today Complete</button>
+  <div id="planOut" class="display"></div>
 </div>
 
-<!-- ===================== STREAK ===================== -->
+<!-- STREAK -->
 <div class="section">
   <h2>Daily Worship Streak</h2>
   <div id="streakOut">0-Day Streak</div>
 </div>
 
-<!-- ===================== PRAYER COUNTERS ===================== -->
-<div class="section carouselContainer">
+<!-- COUNTERS -->
+<div class="section">
   <h2>Prayer Counters</h2>
 
-  <div class="carousels">
-    <div class="slide" id="slide1">
-      <h3>Jesus Prayer</h3>
-      <button onclick="jp++ ; updateJP()">+1</button>
-      <button onclick="jp=0 ; updateJP()">Reset</button>
-      <div id="jpOut">0</div>
-    </div>
+  Jesus Prayer  
+  <button onclick="jp++ ; updateCounts()">+1</button>
+  <button onclick="jp=0 ; updateCounts()">Reset</button>
+  <div id="jpOut">0</div>
 
-    <div class="slide" id="slide2">
-      <h3>Scripture Prayer</h3>
-      <button onclick="sp++ ; updateSP()">+1</button>
-      <button onclick="sp=0 ; updateSP()">Reset</button>
-      <div id="spOut">0</div>
-    </div>
+  Scripture Prayer  
+  <button onclick="sp++ ; updateCounts()">+1</button>
+  <button onclick="sp=0 ; updateCounts()">Reset</button>
+  <div id="spOut">0</div>
 
-    <div class="slide" id="slide3">
-      <h3>Blessing Counter</h3>
-      <button onclick="bl++ ; updateBL()">I Prayed</button>
-      <button onclick="bl++ ; updateBL()">I Forgave</button>
-      <button onclick="bl++ ; updateBL()">I Encouraged</button>
-      <button onclick="bl=0 ; updateBL()">Reset</button>
-      <div id="blOut">0</div>
-    </div>
+  Blessing Counter  
+  <button onclick="bl++ ; updateCounts()">I Prayed</button>
+  <button onclick="bl++ ; updateCounts()">I Forgave</button>
+  <button onclick="bl++ ; updateCounts()">I Encouraged</button>
+  <button onclick="bl=0 ; updateCounts()">Reset</button>
+  <div id="blOut">0</div>
 
-    <div class="slide" id="slide4">
-      <h3>Custom Counter</h3>
-      <button onclick="cp++ ; updateCP()">+1</button>
-      <button onclick="cp=0 ; updateCP()">Reset</button>
-      <div id="cpOut">0</div>
-    </div>
-  </div>
-
-  <button class="carouselArrow" onclick="prevSlide()">◀</button>
-  <button class="carouselArrow" onclick="nextSlide()">▶</button>
+  Custom Prayer  
+  <button onclick="cp++ ; updateCounts()">+1</button>
+  <button onclick="cp=0 ; updateCounts()">Reset</button>
+  <div id="cpOut">0</div>
 </div>
 
-
-<!-- ==============================================
-     JAVASCRIPT
-================================================= -->
-
 <script>
-/* INTRO */
+/* ======================= INTRO ======================= */
 window.onload = () => {
   const intro = document.getElementById("introOverlay");
   document.getElementById("introAudio").play().catch(()=>{});
   setTimeout(() => {
     intro.style.opacity = 0;
-    setTimeout(() => intro.style.display="none", 2000);
+    setTimeout(() => intro.style.display="none",2000);
   }, 3000);
 };
 
+/* FEATHER SPAWN */
+setInterval(()=>{
+  const f=document.createElement("div");
+  f.className="feather";
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDuration=(6+Math.random()*5)+"s";
+  f.style.background="url('data:image/svg+xml;utf8,<svg width=\"60\" height=\"60\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M30 5 C10 20 5 40 20 55 C40 65 55 40 45 20 Z\" fill=\"white\" fill-opacity=\"0.75\"/></svg>')";
+  f.style.backgroundSize="cover";
+  document.getElementById("featherContainer").appendChild(f);
+  setTimeout(()=>f.remove(),12000);
+},700);
+
 /* NIGHT MODE */
 function toggleNight() {
-  if (document.body.style.background === "black") {
-    document.body.style.background = "#f5ecd4";
-    document.body.style.color = "#4a3205";
-  } else {
-    document.body.style.background = "black";
-    document.body.style.color = "white";
-  }
+  document.body.classList.toggle("night");
 }
 
 /* BIBLE READER */
-async function loadBible() {
-  const ref = document.getElementById("bibleRef").value;
-  if (!ref) return alert("Enter a reference.");
-  document.getElementById("bibleOut").innerText = "Loading…";
-  const r = await fetch("https://bible-api.com/" + encodeURIComponent(ref) + "?translation=kjv");
-  const d = await r.json();
-  document.getElementById("bibleOut").innerText = d.text || "Not found.";
+async function loadBible(){
+  let ref=document.getElementById("bibleRef").value;
+  if(!ref)return;
+  let r=await fetch("https://bible-api.com/"+encodeURIComponent(ref)+"?translation=kjv");
+  let d=await r.json();
+  document.getElementById("bibleOut").innerText=d.text||"Not found.";
 }
 
 /* AUTO SCROLL */
-let scrolling=false,speed=1;
+let scrolling=false,scrollSpeed=1;
 function startScroll(){scrolling=true;scrollLoop();}
-function scrollLoop(){ if(scrolling){window.scrollBy(0,speed); setTimeout(scrollLoop,50);} }
-function fasterScroll(){speed++;}
-function slowerScroll(){if(speed>1)speed--;}
+function scrollLoop(){ if(scrolling){window.scrollBy(0,scrollSpeed); setTimeout(scrollLoop,50);} }
 function stopScroll(){scrolling=false;}
 
-/* MUSIC */
-let audio = new Audio();
-const songs = {
-  holy:"https://files.catbox.moe/q0n9yh.mp3",
-  gospel:"https://files.catbox.moe/frtvpr.mp3"
+/* MUSIC PLAYER */
+let audio=new Audio();
+const songs={
+  gospel:"https://files.catbox.moe/frtvpr.mp3",
+  holy:"https://files.catbox.moe/q0n9yh.mp3"
 };
-function playSpecific(type){
+function playSong(type){
   stopMusic();
   audio.src=songs[type];
   audio.play();
-  document.getElementById("musicNow").innerText =
-    "Playing: " + (type==="holy"?"Holy Forever":"Use This Gospel");
+  document.getElementById("musicOut").innerText =
+    type==="gospel"?"Playing: Use This Gospel":"Playing: Holy Forever";
 }
-const playlist=[
-  {name:"Holy Forever",url:songs.holy},
-  {name:"Use This Gospel",url:songs.gospel}
-];
-let cur=0;
-function playPlaylist(){
+const playlist=[songs.holy,songs.gospel];
+let pIndex=0;
+function togglePlaylist(){
   if(audio.paused){
-    audio.src=playlist[cur].url; audio.play();
-    document.getElementById("musicNow").innerText="Playing: "+playlist[cur].name;
+    audio.src=playlist[pIndex];
+    audio.play();
+    document.getElementById("musicOut").innerText=
+      pIndex===0?"Playing: Holy Forever":"Playing: Use This Gospel";
   } else {
-    audio.pause(); document.getElementById("musicNow").innerText="Paused";
+    audio.pause();
+    document.getElementById("musicOut").innerText="Paused";
   }
 }
 function stopMusic(){
-  audio.pause(); audio.currentTime=0;
-  document.getElementById("musicNow").innerText="Stopped";
+  audio.pause();
+  audio.currentTime=0;
+  document.getElementById("musicOut").innerText="No song playing.";
 }
 
 /* PSALM */
 function loadPsalm(){
-  const arr=["Psalm 23 — The Lord is my Shepherd","Psalm 91 — He is my refuge","Psalm 121 — Help comes from the Lord"];
-  document.getElementById("psalmOut").innerText = arr[new Date().getDate()%arr.length];
+  let arr=["Psalm 23","Psalm 91","Psalm 121"];
+  document.getElementById("psalmOut").innerText=
+    arr[new Date().getDate()%3];
 }
 
 /* CONFESSION */
-function confess(){
-  const mood = document.getElementById("confMood").value;
-  let msg = "";
-  if (mood==="guilt") msg="You are forgiven in Christ.";
-  if (mood==="shame") msg="God lifts your shame away.";
-  if (mood==="regret") msg="Your past is redeemed.";
-
-  document.getElementById("confOut").innerHTML = msg;
+let feel="";
+function submitConfession(){
+  const msg={
+    Broken:"The Lord heals the brokenhearted.",
+    Guilty:"There is no condemnation in Christ.",
+    Anxious:"Cast all your anxiety on Him.",
+    Ashamed:"Whoever trusts in Him is not ashamed.",
+    Tired:"Come to Me and I will give you rest.",
+    Confused:"God is not the author of confusion."
+  };
+  document.getElementById("confOut").innerText=msg[feel]||
+    "Choose a feeling first.";
 
   const overlay=document.getElementById("healingOverlay");
   overlay.style.display="flex";
   overlay.style.opacity=1;
   setTimeout(()=>{
-    overlay.style.transition="opacity 2s";
+    overlay.style.transition="2s";
     overlay.style.opacity=0;
     setTimeout(()=>overlay.style.display="none",2000);
-  },1500);
+  },1600);
 }
 
-/* SPEAK LORD */
+/* GOD SPEAKS */
 function speak(){
-  const arr=[
-    "John 3:16 — For God so loved the world…",
-    "Romans 8:28 — All things work together for good…",
-    "Isaiah 41:10 — Fear not, for I am with you."
+  let arr=[
+    "Fear not, for I am with you. — Isaiah 41:10",
+    "The Lord is my Shepherd — Psalm 23:1",
+    "God so loved the world — John 3:16"
   ];
-  document.getElementById("speakOut").innerText = arr[Math.floor(Math.random()*arr.length)];
+  document.getElementById("speakOut").innerText=
+    arr[Math.floor(Math.random()*arr.length)];
 }
 
 /* ENCOURAGEMENT */
-function enc(){
-  const arr=[
-    "God is strengthening you right now.",
+function encourage(){
+  let arr=[
     "You are not alone.",
-    "The Lord is your refuge and fortress."
+    "God is with you.",
+    "You are loved by God."
   ];
-  document.getElementById("encOut").innerText = arr[Math.floor(Math.random()*arr.length)];
+  document.getElementById("encOut").innerText=
+    arr[Math.floor(Math.random()*arr.length)];
 }
 
-/* PRAYER */
+/* PRAYER REQUEST */
 function sendPrayer(){
-  const t=document.getElementById("prayText").value;
-  if(!t) return alert("Write a request.");
+  let t=document.getElementById("prayBox").value;
+  if(!t)return alert("Write something.");
   document.getElementById("prayOut").innerText="Your prayer has been lifted.";
-  document.getElementById("prayText").value="";
+  document.getElementById("prayBox").value="";
 }
 
 /* 365 PLAN */
 function loadPlan(){
-  const arr=["Genesis 1–3","Matthew 1–3","Psalm 1","John 1"];
-  document.getElementById("planOut").innerText = arr[new Date().getDay()%arr.length];
+  let arr=["Genesis 1","Matthew 5","Romans 8","Psalm 27"];
+  document.getElementById("planOut").innerText=
+    arr[new Date().getDay()%4];
 }
 
-/* STREAK */
+/* DAILY STREAK */
 let streak=Number(localStorage.getItem("streak")||0);
-let last = localStorage.getItem("lastDay");
-document.getElementById("streakOut").innerText=streak+"-Day Streak";
+let last=localStorage.getItem("lastDay");
+document.getElementById("streakOut").innerText=streak+"‑Day Streak";
 function markDay(){
-  const today=new Date().toDateString();
+  let today=new Date().toDateString();
   if(last===today)return alert("Already marked today.");
   if(last){
-    const diff=(new Date(today)-new Date(last))/(1000*60*60*24);
-    streak = diff===1 ? streak+1 : 1;
+    let diff=(new Date(today)-new Date(last))/(1000*60*60*24);
+    streak=(diff===1)?streak+1:1;
   } else streak=1;
   last=today;
   localStorage.setItem("streak",streak);
   localStorage.setItem("lastDay",today);
-  document.getElementById("streakOut").innerText=streak+"-Day Streak";
+  document.getElementById("streakOut").innerText=streak+"‑Day Streak";
 }
 
 /* COUNTERS */
 let jp=0,sp=0,bl=0,cp=0;
-function updateJP(){document.getElementById("jpOut").innerText=jp;}
-function updateSP(){document.getElementById("spOut").innerText=sp;}
-function updateBL(){document.getElementById("blOut").innerText=bl;}
-function updateCP(){document.getElementById("cpOut").innerText=cp;}
-
-/* CAROUSEL */
-let slideIndex=0;
-const slides=document.querySelectorAll(".slide");
-function showSlide(i){
-  slides.forEach((s,idx)=>s.style.display = idx===i ? "block":"none");
+function updateCounts(){
+  document.getElementById("jpOut").innerText=jp;
+  document.getElementById("spOut").innerText=sp;
+  document.getElementById("blOut").innerText=bl;
+  document.getElementById("cpOut").innerText=cp;
 }
-function nextSlide(){
-  slideIndex=(slideIndex+1)%slides.length;
-  showSlide(slideIndex);
-}
-function prevSlide(){
-  slideIndex=(slideIndex-1+slides.length)%slides.length;
-  showSlide(slideIndex);
-}
-showSlide(0);
 </script>
 
 </body>
